@@ -1,6 +1,8 @@
 HKCircularProgressView
 ======================
 
+![Screenshot](Screenshot.png "HKCircularProgressView")
+
 HKCircularProgressView is a simple discrete/continuous circular progress view with current/max properties, customizable appearance and animatable.
 
 How to use it
