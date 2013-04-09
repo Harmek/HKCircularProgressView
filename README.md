@@ -8,11 +8,11 @@ HKCircularProgressView is a simple discrete/continuous circular progress view wi
 How to use it
 -------------
 
-Installation through CocoaPods is not yet supported so...
-
-1. Clone this repository.
-2. Copy HKCircularProgressView and HKCircularProgressLayer files into your project.
-3. #import "HKCircularProgressView" and add the view as a subview (you can also do this from a .xib file).
+1. Use [CocoaPods](http://www.cocoapods.org) by adding *pod 'HKCircularProgressView'* in your Podfile.
+2. Manually:
+  * Clone this repository
+  * Copy HKCircularProgressView and HKCircularProgressLayer files (.h and .m) into your project.
+  * #import "HKCircularProgressView" and add the view as a subview (you can also do this from a .xib file).
 
 How to configure it
 -------------------
