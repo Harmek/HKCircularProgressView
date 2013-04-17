@@ -34,6 +34,8 @@
 
 @property (nonatomic, strong) UIColor           *progressTintColor;
 @property (nonatomic, strong) UIColor           *trackTintColor;
+@property (nonatomic, strong) UIColor           *outlineTintColor;
+@property (nonatomic, assign) CGFloat           outlineWidth;
 @property (nonatomic, assign) CFTimeInterval    animationDuration;
 @property (nonatomic, assign) float             fillRadius;
 @property (nonatomic, assign) float             startAngle;

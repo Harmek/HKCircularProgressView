@@ -27,40 +27,30 @@
 //  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 //  POSSIBILITY OF SUCH DAMAGE.
 
-#define TWO_PI M_PI * 2.0f
-static const float k2Pi = TWO_PI;
+#import "HKCircularProgressLayer.h"
 
+#define TWO_PI M_PI * 2.0f
 #define GAP 0.1
 
-#import "HKCircularProgressLayer.h"
+static const float k2Pi = TWO_PI;
 
 @interface HKCircularProgressLayer ()
 
-+ (void)drawTrackInContext:(CGContextRef)ctx
-                     fully:(BOOL)drawFullTrack
+- (void)drawTrackInContext:(CGContextRef)ctx
                 withCenter:(CGPoint)center
-                 andRadius:(CGFloat)radius
-                   andTint:(CGColorRef)trackTintColor
-             andFillAmount:(float)trackFillAmount;
+                 andRadius:(CGFloat)radius;
 
-
-
-+ (void)drawProgressInContext:(CGContextRef)ctx
-                  withCurrent:(float)current
-                       andMax:(float)max
-                      andStep:(float)step
+- (void)drawProgressInContext:(CGContextRef)ctx
                      atCenter:(CGPoint)center
-                andStartAngle:(float)startAngle
-                   withRadius:(CGFloat)radius
-                andFillAmount:(float)trackFillAmount
-                 andTintColor:(CGColorRef)tintColor;
+                   withRadius:(CGFloat)radius;
 
 + (void)drawArcInContext:(CGContextRef)ctx
               withCenter:(CGPoint)center
                andRadius:(CGFloat)radius
           andInnerRadius:(CGFloat)innerRadius
                  between:(CGFloat)startAngle
-                     and:(CGFloat)destAngle;
+                     and:(CGFloat)destAngle
+                    fill:(BOOL)fill;
 @end
 
 @implementation HKCircularProgressLayer
@@ -75,6 +65,8 @@ static const float k2Pi = TWO_PI;
             HKCircularProgressLayer *other = layer;
             self.progressTintColor = other.progressTintColor;
             self.trackTintColor = other.trackTintColor;
+            self.outlineTintColor = other.outlineTintColor;
+            self.outlineWidth = other.outlineWidth;
             self.animationDuration = other.animationDuration;
             self.fillRadius = other.fillRadius;
             self.drawFullTrack = other.drawFullTrack;
@@ -100,6 +92,8 @@ static const float k2Pi = TWO_PI;
 {
     if ([key isEqualToString:@"progressTintColor"]
         || [key isEqualToString:@"trackTintColor"]
+        || [key isEqualToString:@"outlineTintColor"]
+        || [key isEqualToString:@"outlineWidth"]
         || [key isEqualToString:@"fillRadius"]
         || [key isEqualToString:@"drawFullTrack"]
         || [key isEqualToString:@"startAngle"]
@@ -113,14 +107,11 @@ static const float k2Pi = TWO_PI;
     return [super needsDisplayForKey:key];
 }
 
-+ (void)drawTrackInContext:(CGContextRef)ctx
-                     fully:(BOOL)drawFullTrack
-                withCenter:(CGPoint)center
-                 andRadius:(CGFloat)radius
-                   andTint:(CGColorRef)trackTintColor
-             andFillAmount:(float)fillRadius
+- (void)drawTrackInContext:(CGContextRef)ctx
+                 withCenter:(CGPoint)center
+                  andRadius:(CGFloat)radius
 {
-    if (drawFullTrack)
+    if (self.drawFullTrack)
     {
         CGRect circleRect = CGRectMake(center.x - radius, center.y - radius, radius * 2.0, radius * 2.0);
         CGContextAddEllipseInRect(ctx, circleRect);
@@ -128,7 +119,7 @@ static const float k2Pi = TWO_PI;
     else
     {
         CGContextAddArc(ctx, center.x, center.y, radius, 0, k2Pi, 0);
-        CGFloat innerRadius = radius * (1.f - fillRadius);
+        CGFloat innerRadius = radius * (1.f - self.fillRadius);
 
         CGFloat x = center.x + innerRadius;
         CGFloat y = center.y;
@@ -137,7 +128,7 @@ static const float k2Pi = TWO_PI;
         CGContextClosePath(ctx);
     }
 
-    CGContextSetFillColorWithColor(ctx, trackTintColor);
+    CGContextSetFillColorWithColor(ctx, self.trackTintColor.CGColor);
     CGContextFillPath(ctx);
 }
 
@@ -147,6 +138,7 @@ static const float k2Pi = TWO_PI;
           andInnerRadius:(CGFloat)innerRadius
                  between:(CGFloat)startAngle
                      and:(CGFloat)destAngle
+                    fill:(BOOL)fill
 {
     CGContextAddArc(ctx, center.x, center.y, radius, startAngle, destAngle, 0);
     if (innerRadius > .0f)
@@ -161,80 +153,91 @@ static const float k2Pi = TWO_PI;
         CGContextAddLineToPoint(ctx, center.x, center.y);
     }
     CGContextClosePath(ctx);
-    CGContextFillPath(ctx);
+    if (fill)
+        CGContextFillPath(ctx);
+    CGContextStrokePath(ctx);
 }
 
-+ (void)drawProgressInContext:(CGContextRef)ctx
-                  withCurrent:(float)current
-                       andMax:(float)max
-                      andStep:(float)step
+- (void)drawProgressInContext:(CGContextRef)ctx
                      atCenter:(CGPoint)center
-                andStartAngle:(float)startAngle
                    withRadius:(CGFloat)radius
-                andFillAmount:(float)fillRadius
-                 andTintColor:(CGColorRef)tintColor
 {
-    CGContextSetFillColorWithColor(ctx, tintColor);
+    CGContextSetFillColorWithColor(ctx, self.progressTintColor.CGColor);
+    CGContextSetStrokeColorWithColor(ctx, self.outlineTintColor
+                                     ? self.outlineTintColor.CGColor
+                                     : self.progressTintColor.CGColor);
+    CGContextSetLineWidth(ctx, self.outlineWidth);
 
     CGFloat destAngle = .0f;
-    CGFloat innerRadius = radius * (1.f - fillRadius);
+    CGFloat innerRadius = radius * (1.f - self.fillRadius);
 
-    if (step == .0f)
+    if (self.step == .0f)
     {
-
-        CGFloat progress = current / max;
-        destAngle = startAngle + progress * k2Pi;
+        CGFloat progress = self.current / self.max;
+        destAngle = self.startAngle + progress * k2Pi;
         [HKCircularProgressLayer drawArcInContext:ctx
-                          withCenter:center
-                           andRadius:radius
-                      andInnerRadius:innerRadius
-                             between:startAngle
-                                 and:destAngle];
+                                       withCenter:center
+                                        andRadius:radius
+                                   andInnerRadius:innerRadius
+                                          between:self.startAngle
+                                              and:destAngle
+                                             fill:YES];
+        if (self.outlineWidth> .0 && self.current < self.max)
+        {
+            [HKCircularProgressLayer drawArcInContext:ctx
+                                           withCenter:center
+                                            andRadius:radius
+                                       andInnerRadius:innerRadius
+                                              between:destAngle
+                                                  and:self.startAngle
+                                                 fill:NO];
+        }
     }
     else
     {
-        float gap = (step * GAP) / max;
+        float gap = (self.step * GAP) / self.max;
         float gapAngle = gap * k2Pi;
-        float incr = (step - (step * GAP)) / max;
+        float incr = (self.step - (self.step * GAP)) / self.max;
         float stepAngle = incr * k2Pi;
-        startAngle += gapAngle * .5f;
-        for (float f = .0f; f < current; f += step)
+        float startAngle = self.startAngle + (gapAngle * .5f);
+        for (float f = .0f; f < self.current; f += self.step)
         {
             destAngle = startAngle + stepAngle;
-
             [HKCircularProgressLayer drawArcInContext:ctx
-                              withCenter:center
-                               andRadius:radius
-                          andInnerRadius:innerRadius
-                                 between:startAngle
-                                     and:destAngle];
-
+                                           withCenter:center
+                                            andRadius:radius
+                                       andInnerRadius:innerRadius
+                                              between:startAngle
+                                                  and:destAngle
+                                                 fill:YES];
             startAngle += stepAngle + gapAngle;
+        }
+
+        if (self.outlineWidth > .0)
+        {
+            for (float f = self.current + self.step; f < self.max; f += self.step)
+            {
+                destAngle = startAngle + stepAngle;
+                [HKCircularProgressLayer drawArcInContext:ctx
+                                               withCenter:center
+                                                andRadius:radius
+                                           andInnerRadius:innerRadius
+                                                  between:startAngle
+                                                      and:destAngle
+                                                     fill:NO];
+                startAngle += stepAngle + gapAngle;
+            }
         }
     }
 }
 
 - (void)drawInContext:(CGContextRef)ctx
 {
-    CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) * .5f;
+    CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) * .5f - (2. * self.outlineWidth);
     CGPoint center = CGPointMake(self.bounds.size.width * .5f, self.bounds.size.height * .5f);
 
-    [HKCircularProgressLayer drawTrackInContext:ctx
-                             fully:self.drawFullTrack
-                        withCenter:center
-                         andRadius:radius
-                           andTint:self.trackTintColor.CGColor
-                     andFillAmount:self.fillRadius];
-
-    [HKCircularProgressLayer drawProgressInContext:ctx
-                          withCurrent:self.current
-                               andMax:self.max
-                              andStep:self.step
-                             atCenter:center
-                        andStartAngle:self.startAngle
-                           withRadius:radius
-                        andFillAmount:self.fillRadius
-                         andTintColor:self.progressTintColor.CGColor];
+    [self drawTrackInContext:ctx withCenter:center andRadius:radius];
+    [self drawProgressInContext:ctx atCenter:center withRadius:radius];
 }
 
 @end

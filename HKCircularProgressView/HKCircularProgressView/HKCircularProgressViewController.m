@@ -55,6 +55,8 @@
     self.circularProgressView.step = 0.1f;
     self.circularProgressView.startAngle = (M_PI * 3) * 0.5;
     self.circularProgressView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.circularProgressView.outlineWidth = 1;
+    self.circularProgressView.outlineTintColor = [UIColor blackColor];
 
     self.circularProgressView2.animationDuration = 5.0f;
     self.circularProgressView2.fillRadius = .35f;
@@ -64,7 +66,8 @@
     self.circularProgressView3.animationDuration = 5.0f;
     self.circularProgressView3.fillRadius = 1.0f;
     self.circularProgressView3.progressTintColor = [UIColor yellowColor];
-    self.circularProgressView2.translatesAutoresizingMaskIntoConstraints = NO;
+    self.circularProgressView3.translatesAutoresizingMaskIntoConstraints = NO;
+    self.circularProgressView3.outlineWidth = 2;
 
     [HKCircularProgressViewController addShadowToView:self.circularProgressView];
     [HKCircularProgressViewController addShadowToView:self.circularProgressView2];

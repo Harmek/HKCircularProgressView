@@ -84,6 +84,8 @@
 
     self.progressTintColor = [UIColor blackColor];
     self.trackTintColor = [UIColor clearColor];
+    self.outlineTintColor = nil;
+    self.outlineWidth = .0;
     self.fillRadius = 0.25f;
     self.drawFullTrack = NO;
     self.animationDuration = 0.25f;
@@ -110,6 +112,25 @@
         HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
         layer.trackTintColor = trackTintColor;
         [self.layer setNeedsDisplay];
+    }
+}
+
+- (void)setOutlineTintColor:(UIColor *)outlineTintColor
+{
+    if (![self.outlineTintColor isEqual:outlineTintColor])
+    {
+        HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+        layer.outlineTintColor = outlineTintColor;
+        [self.layer setNeedsDisplay];
+    }
+}
+
+- (void)setOutlineWidth:(CGFloat)outlineWidth
+{
+    if (self.outlineWidth != outlineWidth)
+    {
+        HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+        layer.outlineWidth = outlineWidth;
     }
 }
 
@@ -235,6 +256,20 @@
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.trackTintColor;
+}
+
+- (UIColor *)outlineTintColor
+{
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+
+    return layer.outlineTintColor;
+}
+
+- (CGFloat)outlineWidth
+{
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+
+    return layer.outlineWidth;
 }
 
 - (float)fillRadius

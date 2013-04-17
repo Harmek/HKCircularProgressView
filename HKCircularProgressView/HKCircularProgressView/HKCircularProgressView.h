@@ -48,6 +48,8 @@ typedef enum HKCircularProgressType
 
 @property (nonatomic, strong) UIColor           *progressTintColor      UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIColor           *trackTintColor         UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor           *outlineTintColor       UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGFloat           outlineWidth            UI_APPEARANCE_SELECTOR;
 @property (nonatomic, assign) CFTimeInterval    animationDuration       UI_APPEARANCE_SELECTOR;
 @property (nonatomic, assign) float             fillRadius              UI_APPEARANCE_SELECTOR;
 @property (nonatomic, assign) float             startAngle              UI_APPEARANCE_SELECTOR;
