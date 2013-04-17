@@ -31,3 +31,8 @@ You can also configure the appearance of the view (also accessible through [HKCi
 * fillRadius: the amount of the circle that is filled. 1 draws a full circle, 0.5 draws half a circle (a donut), 0.25 a quarter, etc.
 * startAngle: the angle, in radius, where the progression begins.
 * drawFullTrack: indicates whether the track is fully drawn or not. YES will always draw a full circle of 'trackColor' color.
+
+Those appearance options are not available in the 1.0.0 build
+
+* outlineWidth: if 0 (by default), does nothing. If > 0 draws outlines for non-completed progress parts.
+* outlineColor: color of the outlines, set to _progressTintColor_ by default.
