@@ -1,5 +1,5 @@
 //
-//  HKViewController.m
+//  HKCircularProgressView.m
 //  HKCircluarProgressView
 //
 //  Copyright (c) 2012-2013, Panos Baroudjian.

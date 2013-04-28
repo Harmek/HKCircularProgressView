@@ -29,12 +29,6 @@
 
 #import <UIKit/UIKit.h>
 
-typedef enum HKCircularProgressType
-{
-    HKCircularProgressTypeContinuous = 0,
-    HKCircularProgressTypeDiscrete
-} HKCircularProgressType;
-
 @interface HKCircularProgressView : UIView <UIAppearanceContainer>
 
 - (void)setFillRadius:(float)fill

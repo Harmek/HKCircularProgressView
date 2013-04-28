@@ -45,7 +45,7 @@
     {
         [self defaultInit];
     }
-    
+
     return self;
 }
 
@@ -101,7 +101,7 @@
     {
         HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
         layer.progressTintColor = progressTintColor;
-        [self.layer setNeedsDisplay];
+        [layer setNeedsDisplay];
     }
 }
 
@@ -111,7 +111,7 @@
     {
         HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
         layer.trackTintColor = trackTintColor;
-        [self.layer setNeedsDisplay];
+        [layer setNeedsDisplay];
     }
 }
 
@@ -121,7 +121,7 @@
     {
         HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
         layer.outlineTintColor = outlineTintColor;
-        [self.layer setNeedsDisplay];
+        [layer setNeedsDisplay];
     }
 }
 
@@ -131,6 +131,7 @@
     {
         HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
         layer.outlineWidth = outlineWidth;
+        [layer setNeedsDisplay];
     }
 }
 
@@ -141,7 +142,7 @@
     {
         return;
     }
-    
+
     fillRadius = MIN(MAX(0.0f, fillRadius), 1.0f);
 
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
@@ -156,6 +157,7 @@
     }
 
     layer.fillRadius = fillRadius;
+    [layer setNeedsDisplay];
 }
 
 - (void)setFillRadius:(float)fillRadius
@@ -170,7 +172,7 @@
     {
         return;
     }
-    
+
     current = MIN(MAX(0.0f, current), self.max);
 
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
@@ -184,6 +186,7 @@
     }
 
     layer.current = current;
+    [layer setNeedsDisplay];
 }
 
 - (void)setCurrent:(float)current
@@ -197,6 +200,7 @@
     {
         HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
         layer.startAngle = startAngle;
+        [layer setNeedsDisplay];
     }
 }
 
@@ -206,6 +210,7 @@
     {
         HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
         layer.drawFullTrack = drawFullTrack;
+        [layer setNeedsDisplay];
     }
 }
 
@@ -215,6 +220,7 @@
     {
         HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
         layer.step = step;
+        [layer setNeedsDisplay];
     }
 }
 
@@ -237,6 +243,7 @@
     }
 
     layer.max = max;
+    [layer setNeedsDisplay];
 }
 
 - (void)setMax:(float)max
@@ -310,7 +317,7 @@
 - (float)current
 {
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
-
+    
     return layer.current;
 }
 
