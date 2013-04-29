@@ -45,7 +45,7 @@
 									<object class="IBUIView" id="35635962">
 										<reference key="NSNextResponder" ref="981848923"/>
 										<int key="NSvFlags">274</int>
-										<string key="NSFrame">{{13, 12}, {215, 215}}</string>
+										<string key="NSFrame">{{43, 42}, {115, 115}}</string>
 										<reference key="NSSuperview" ref="981848923"/>
 										<reference key="NSWindow"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
@@ -56,7 +56,7 @@
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 									</object>
 								</array>
-								<string key="NSFrame">{{25, 25}, {240, 240}}</string>
+								<string key="NSFrame">{{45, 45}, {200, 200}}</string>
 								<reference key="NSSuperview" ref="958589866"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="35635962"/>

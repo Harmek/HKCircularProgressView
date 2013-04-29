@@ -213,6 +213,16 @@
     }
 }
 
+- (void)setEndPoint:(id<HKCircularProgressEndPointDrawer>)endPoint
+{
+    if (endPoint != self.endPoint)
+    {
+        HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+        layer.endPoint = endPoint;
+        [layer setNeedsDisplay];
+    }
+}
+
 - (void)setStep:(float)step
 {
     if (step != self.step)
@@ -297,6 +307,13 @@
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.drawFullTrack;
+}
+
+- (id<HKCircularProgressEndPointDrawer>)endPoint
+{
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+
+    return layer.endPoint;
 }
 
 - (float)step

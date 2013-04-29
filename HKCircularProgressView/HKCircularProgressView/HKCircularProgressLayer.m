@@ -34,7 +34,6 @@
 
 static const float k2Pi = TWO_PI;
 
-
 @implementation HKCircularProgressEndPointFlat
 
 - (void)drawEndPointInContext:(CGContextRef)ctx
@@ -44,14 +43,31 @@ static const float k2Pi = TWO_PI;
                       atAngle:(CGFloat)angle
                     clockwise:(int)clockwise
 {
-    CGFloat x = center.x + innerRadius * cos(angle);
-    CGFloat y = center.y + innerRadius * sin(angle);
-    CGContextAddLineToPoint(ctx, x, y);
 }
 
 @end
 
-@implementation HKCircularProgressEndPointTriangle
+static void getTipPointAndTransformForEndPoint(CGPoint center,
+                                               CGFloat radius,
+                                               CGFloat innerRadius,
+                                               CGFloat angle,
+                                               int clockwise,
+                                               CGPoint *outPoint,
+                                               CGAffineTransform *outTransform)
+{
+    CGFloat trackWidth = radius - innerRadius;
+    CGFloat halfTrackWidth = trackWidth * .5;
+    CGFloat trackCenterRadius = innerRadius + halfTrackWidth;
+    *outTransform = CGAffineTransformMakeRotation(angle);
+    outTransform->tx = center.x;
+    outTransform->ty = center.y;
+    if (clockwise)
+        halfTrackWidth *= -1;
+    *outPoint = CGPointMake(trackCenterRadius, halfTrackWidth);
+    *outPoint = CGPointApplyAffineTransform(*outPoint, *outTransform);
+}
+
+@implementation HKCircularProgressEndPointSpike
 
 - (void)drawEndPointInContext:(CGContextRef)ctx
                    withCenter:(CGPoint)center
@@ -60,16 +76,9 @@ static const float k2Pi = TWO_PI;
                       atAngle:(CGFloat)angle
                     clockwise:(int)clockwise
 {
-    CGFloat trackWidth = radius - innerRadius;
-    CGFloat halfTrackWidth = trackWidth * .5;
-    CGFloat trackCenterRadius = innerRadius + halfTrackWidth;
-    CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
-    transform.tx = center.x;
-    transform.ty = center.y;
-    if (clockwise)
-        halfTrackWidth *= -1;
-    CGPoint tipPoint = CGPointMake(trackCenterRadius, halfTrackWidth);
-    tipPoint = CGPointApplyAffineTransform(tipPoint, transform);
+    CGPoint tipPoint = CGPointZero;
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, clockwise, &tipPoint, &transform);
     CGContextAddLineToPoint(ctx, tipPoint.x, tipPoint.y);
     CGFloat x = center.x + innerRadius * cos(angle);
     CGFloat y = center.y + innerRadius * sin(angle);
@@ -87,16 +96,9 @@ static const float k2Pi = TWO_PI;
                       atAngle:(CGFloat)angle
                     clockwise:(int)clockwise
 {
-    CGFloat trackWidth = radius - innerRadius;
-    CGFloat halfTrackWidth = trackWidth * .5;
-    CGFloat trackCenterRadius = innerRadius + halfTrackWidth;
-    CGAffineTransform transform = CGAffineTransformMakeRotation(angle);
-    transform.tx = center.x;
-    transform.ty = center.y;
-    if (clockwise)
-        halfTrackWidth *= -1;
-    CGPoint tipPoint = CGPointMake(trackCenterRadius, halfTrackWidth);
-    tipPoint = CGPointApplyAffineTransform(tipPoint, transform);
+    CGPoint tipPoint = CGPointZero;
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, clockwise, &tipPoint, &transform);
     CGFloat x = center.x + innerRadius * cos(angle);
     CGFloat y = center.y + innerRadius * sin(angle);
     CGContextAddQuadCurveToPoint(ctx, tipPoint.x, tipPoint.y, x, y);
@@ -141,8 +143,8 @@ static const float k2Pi = TWO_PI;
             self.fillRadius = other.fillRadius;
             self.drawFullTrack = other.drawFullTrack;
             self.startAngle = other.startAngle;
-            self.endPointType = other.endPointType;
-            
+            self.endPoint = other.endPoint;
+
             self.step = other.step;
             self.current = other.current;
             self.max = other.max;
@@ -159,12 +161,12 @@ static const float k2Pi = TWO_PI;
     return result;
 }
 
-- (id<HKCircularProgressEndPointDrawer>)endPointDrawer
+- (id<HKCircularProgressEndPointDrawer>)endPoint
 {
-    if (!_endPointDrawer)
-        _endPointDrawer = [[HKCircularProgressEndPointFlat alloc] init];
+    if (!_endPoint)
+        _endPoint = [[HKCircularProgressEndPointFlat alloc] init];
 
-    return _endPointDrawer;
+    return _endPoint;
 }
 
 + (BOOL)needsDisplayForKey:(NSString *)key
@@ -176,7 +178,7 @@ static const float k2Pi = TWO_PI;
         || [key isEqualToString:@"fillRadius"]
         || [key isEqualToString:@"drawFullTrack"]
         || [key isEqualToString:@"startAngle"]
-        || [key isEqualToString:@"endPointType"]
+        || [key isEqualToString:@"endPoint"]
         || [key isEqualToString:@"step"]
         || [key isEqualToString:@"current"]
         || [key isEqualToString:@"max"])
@@ -222,20 +224,21 @@ static const float k2Pi = TWO_PI;
 {
     CGContextAddArc(ctx, center.x, center.y, radius, startAngle, destAngle, 0);
 
-    [self.endPointDrawer drawEndPointInContext:ctx
-                                    withCenter:center
-                                     andRadius:radius
-                                andInnerRadius:innerRadius
-                                       atAngle:destAngle
-                                     clockwise:0];
+    [self.endPoint drawEndPointInContext:ctx
+                              withCenter:center
+                               andRadius:radius
+                          andInnerRadius:innerRadius
+                                 atAngle:destAngle
+                               clockwise:0];
     CGContextAddArc(ctx, center.x, center.y, innerRadius, destAngle, startAngle, 1);
 
-    [self.endPointDrawer drawEndPointInContext:ctx
-                                    withCenter:center
-                                     andRadius:innerRadius
-                                andInnerRadius:radius
-                                       atAngle:startAngle
-                                     clockwise:1];
+    [self.endPoint drawEndPointInContext:ctx
+                              withCenter:center
+                               andRadius:innerRadius
+                          andInnerRadius:radius
+                                 atAngle:startAngle
+                               clockwise:1];
+    
     CGContextClosePath(ctx);
     if (fill)
         CGContextFillPath(ctx);

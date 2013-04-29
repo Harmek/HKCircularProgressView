@@ -30,15 +30,6 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
-typedef NS_ENUM(NSUInteger, HKCircularProgressEndPointType)
-{
-    HKCircularProgressEndPointTypeFlat = 0,
-    HKCircularProgressEndPointTypeRound,
-    HKCircularProgressEndPointTypeTriangle,
-
-    HKCircularProgressEndPointTypeMax
-};
-
 @protocol HKCircularProgressEndPointDrawer <NSObject>
 
 - (void)drawEndPointInContext:(CGContextRef)ctx
@@ -58,7 +49,7 @@ typedef NS_ENUM(NSUInteger, HKCircularProgressEndPointType)
 
 @end
 
-@interface HKCircularProgressEndPointTriangle : NSObject<HKCircularProgressEndPointDrawer>
+@interface HKCircularProgressEndPointSpike : NSObject<HKCircularProgressEndPointDrawer>
 
 @end
 
@@ -72,8 +63,7 @@ typedef NS_ENUM(NSUInteger, HKCircularProgressEndPointType)
 @property (nonatomic) float                             fillRadius;
 @property (nonatomic) float                             startAngle;
 @property (nonatomic) BOOL                              drawFullTrack;
-@property (nonatomic) HKCircularProgressEndPointType    endPointType;
-@property (nonatomic) id<HKCircularProgressEndPointDrawer> endPointDrawer;
+@property (nonatomic) id<HKCircularProgressEndPointDrawer> endPoint;
 
 @property (nonatomic) float             step;
 @property (nonatomic) float             max;

@@ -41,17 +41,18 @@
 - (void)setMax:(float)max
       animated:(BOOL)animated;
 
-@property (nonatomic, strong) UIColor           *progressTintColor      UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor           *trackTintColor         UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor           *outlineTintColor       UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) CGFloat           outlineWidth            UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) CFTimeInterval    animationDuration       UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) float             fillRadius              UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) float             startAngle              UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) BOOL              drawFullTrack           UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor                               *progressTintColor  UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor                               *trackTintColor     UI_APPEARANCE_SELECTOR;
+@property (nonatomic) UIColor                               *outlineTintColor   UI_APPEARANCE_SELECTOR;
+@property (nonatomic) CGFloat                               outlineWidth        UI_APPEARANCE_SELECTOR;
+@property (nonatomic) CFTimeInterval                        animationDuration   UI_APPEARANCE_SELECTOR;
+@property (nonatomic) float                                 fillRadius          UI_APPEARANCE_SELECTOR;
+@property (nonatomic) float                                 startAngle          UI_APPEARANCE_SELECTOR;
+@property (nonatomic) BOOL                                  drawFullTrack       UI_APPEARANCE_SELECTOR;
+@property (nonatomic) id<HKCircularProgressEndPointDrawer>  endPoint            UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic, assign) float             step;
-@property (nonatomic, assign) float             max;
-@property (nonatomic, assign) float             current;
+@property (nonatomic) float             step;
+@property (nonatomic) float             max;
+@property (nonatomic) float             current;
 
 @end
