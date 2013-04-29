@@ -28,7 +28,6 @@
 //  POSSIBILITY OF SUCH DAMAGE.
 
 #import "HKCircularProgressView.h"
-#import "HKCircularProgressLayer.h"
 
 @interface HKCircularProgressView ()
 

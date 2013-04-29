@@ -28,6 +28,7 @@
 //  POSSIBILITY OF SUCH DAMAGE.
 
 #import <UIKit/UIKit.h>
+#import "HKCircularProgressLayer.h"
 
 @interface HKCircularProgressView : UIView <UIAppearanceContainer>
 

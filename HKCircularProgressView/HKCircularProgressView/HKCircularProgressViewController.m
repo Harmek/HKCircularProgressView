@@ -55,8 +55,8 @@
     self.circularProgressView.step = 0.1f;
     self.circularProgressView.startAngle = (M_PI * 3) * 0.5;
     self.circularProgressView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.circularProgressView.outlineWidth = 1;
-    self.circularProgressView.outlineTintColor = [UIColor blackColor];
+//    self.circularProgressView.outlineWidth = 1;
+//    self.circularProgressView.outlineTintColor = [UIColor blackColor];
 
     self.circularProgressView2.animationDuration = 5.0f;
     self.circularProgressView2.fillRadius = .35f;
@@ -67,11 +67,14 @@
     self.circularProgressView3.fillRadius = 1.0f;
     self.circularProgressView3.progressTintColor = [UIColor yellowColor];
     self.circularProgressView3.translatesAutoresizingMaskIntoConstraints = NO;
-    self.circularProgressView3.outlineWidth = 2;
+//    self.circularProgressView3.outlineWidth = 2;
 
     [HKCircularProgressViewController addShadowToView:self.circularProgressView];
     [HKCircularProgressViewController addShadowToView:self.circularProgressView2];
     [HKCircularProgressViewController addShadowToView:self.circularProgressView3];
+
+//      self.circularProgressView2.hidden = self.circularProgressView3.hidden = YES;
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -83,8 +86,8 @@
                                   animated:YES];
     [self.circularProgressView3 setCurrent:1.0f
                                   animated:YES];
-    [self.circularProgressView3 setFillRadius:0.35f
-                                     animated:YES];
+//    [self.circularProgressView3 setFillRadius:0.35f
+//                                     animated:YES];
 }
 
 - (void)viewDidUnload {

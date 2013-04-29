@@ -30,19 +30,53 @@
 #import <UIKit/UIKit.h>
 #import <QuartzCore/QuartzCore.h>
 
+typedef NS_ENUM(NSUInteger, HKCircularProgressEndPointType)
+{
+    HKCircularProgressEndPointTypeFlat = 0,
+    HKCircularProgressEndPointTypeRound,
+    HKCircularProgressEndPointTypeTriangle,
+
+    HKCircularProgressEndPointTypeMax
+};
+
+@protocol HKCircularProgressEndPointDrawer <NSObject>
+
+- (void)drawEndPointInContext:(CGContextRef)ctx
+                   withCenter:(CGPoint)center
+                    andRadius:(CGFloat)radius
+               andInnerRadius:(CGFloat)innerRadius
+                      atAngle:(CGFloat)angle
+                    clockwise:(int)clockwise;
+
+@end
+
+@interface HKCircularProgressEndPointFlat : NSObject<HKCircularProgressEndPointDrawer>
+
+@end
+
+@interface HKCircularProgressEndPointRound : NSObject<HKCircularProgressEndPointDrawer>
+
+@end
+
+@interface HKCircularProgressEndPointTriangle : NSObject<HKCircularProgressEndPointDrawer>
+
+@end
+
 @interface HKCircularProgressLayer : CALayer
 
-@property (nonatomic, strong) UIColor           *progressTintColor;
-@property (nonatomic, strong) UIColor           *trackTintColor;
-@property (nonatomic, strong) UIColor           *outlineTintColor;
-@property (nonatomic, assign) CGFloat           outlineWidth;
-@property (nonatomic, assign) CFTimeInterval    animationDuration;
-@property (nonatomic, assign) float             fillRadius;
-@property (nonatomic, assign) float             startAngle;
-@property (nonatomic, assign) BOOL              drawFullTrack;
+@property (nonatomic) UIColor                           *progressTintColor;
+@property (nonatomic) UIColor                           *trackTintColor;
+@property (nonatomic) UIColor                           *outlineTintColor;
+@property (nonatomic) CGFloat                           outlineWidth;
+@property (nonatomic) CFTimeInterval                    animationDuration;
+@property (nonatomic) float                             fillRadius;
+@property (nonatomic) float                             startAngle;
+@property (nonatomic) BOOL                              drawFullTrack;
+@property (nonatomic) HKCircularProgressEndPointType    endPointType;
+@property (nonatomic) id<HKCircularProgressEndPointDrawer> endPointDrawer;
 
-@property (nonatomic, assign) float             step;
-@property (nonatomic, assign) float             max;
-@property (nonatomic, assign) float             current;
+@property (nonatomic) float             step;
+@property (nonatomic) float             max;
+@property (nonatomic) float             current;
 
 @end
