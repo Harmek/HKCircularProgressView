@@ -36,3 +36,4 @@ Those appearance options are not available in the 1.0.0 build
 
 * outlineWidth: if 0 (by default), does nothing. If > 0 draws outlines for non-completed progress parts.
 * outlineColor: color of the outlines, set to _progressTintColor_ by default.
+* endPoint: specifies how the progress' end-points (start and end) will be drawn. Default is flat (_HKCircularProgressEndPointFlat_) but the project contains 2 other built-in end-points: _HKCircularProgressEndPointRound_ and _HKCircularProgressEndPointSpike_. The screenshot above shows all those 3 examples. You can create your own end-point by using the _HKCircularProgressEndPointDrawer_ protocol.
