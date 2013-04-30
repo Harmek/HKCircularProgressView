@@ -94,6 +94,21 @@
     [self setStep:0.0f];
 }
 
+- (void)startAnimating
+{
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"startAngle"];
+    animation.duration = 1;
+    animation.fromValue = [NSNumber numberWithFloat:0];
+    animation.toValue = [NSNumber numberWithFloat:2 * M_PI];
+    animation.repeatCount = INFINITY;
+    [self.layer addAnimation:animation forKey:@"startAngleAnimation"];
+}
+
+- (void)stopAnimating
+{
+    [self.layer removeAllAnimations];
+}
+
 - (void)setProgressTintColor:(UIColor *)progressTintColor
 {
     if (![self.progressTintColor isEqual:progressTintColor])

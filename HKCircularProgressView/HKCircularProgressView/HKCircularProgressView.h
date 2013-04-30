@@ -41,6 +41,16 @@
 - (void)setMax:(float)max
       animated:(BOOL)animated;
 
+/**
+ * Starts an animation that rotates indefinitely the circular view clockwise (by changing the startAngle value).
+ */
+- (void)startAnimating;
+
+/**
+ * Stops all animations.
+ */
+- (void)stopAnimating;
+
 @property (nonatomic) UIColor                               *progressTintColor  UI_APPEARANCE_SELECTOR;
 @property (nonatomic) UIColor                               *trackTintColor     UI_APPEARANCE_SELECTOR;
 @property (nonatomic) UIColor                               *outlineTintColor   UI_APPEARANCE_SELECTOR;
