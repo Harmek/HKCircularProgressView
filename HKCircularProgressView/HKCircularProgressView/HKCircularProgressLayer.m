@@ -190,8 +190,8 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 }
 
 - (void)drawTrackInContext:(CGContextRef)ctx
-                 withCenter:(CGPoint)center
-                  andRadius:(CGFloat)radius
+                withCenter:(CGPoint)center
+                 andRadius:(CGFloat)radius
 {
     if (self.drawFullTrack)
     {
@@ -238,7 +238,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
                           andInnerRadius:radius
                                  atAngle:startAngle
                                clockwise:1];
-    
+
     CGContextClosePath(ctx);
     if (fill)
         CGContextFillPath(ctx);
@@ -300,9 +300,9 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
             startAngle += stepAngle + gapAngle;
         }
 
-        if (self.outlineWidth > .0)
+        if (self.outlineWidth > .0 && self.max)
         {
-            for (float f = self.current + self.step; f < self.max; f += self.step)
+            for (float f = self.current + self.step; f <= self.max; f += self.step)
             {
                 destAngle = startAngle + stepAngle;
                 [self drawArcInContext:ctx
