@@ -30,7 +30,7 @@
 #import <UIKit/UIKit.h>
 #import "HKCircularProgressLayer.h"
 
-@interface HKCircularProgressView : UIView <UIAppearanceContainer>
+@interface HKCircularProgressView : UIView
 
 - (void)setFillRadius:(float)fill
              animated:(BOOL)animated;
@@ -60,6 +60,7 @@
 @property (nonatomic) float                                 startAngle          UI_APPEARANCE_SELECTOR;
 @property (nonatomic) BOOL                                  drawFullTrack       UI_APPEARANCE_SELECTOR;
 @property (nonatomic) id<HKCircularProgressEndPointDrawer>  endPoint            UI_APPEARANCE_SELECTOR;
+@property (nonatomic) CGFloat                               gap                 UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic) float             step;
 @property (nonatomic) float             max;

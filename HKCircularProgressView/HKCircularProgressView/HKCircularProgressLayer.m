@@ -30,7 +30,6 @@
 #import "HKCircularProgressLayer.h"
 
 #define TWO_PI M_PI * 2.0f
-#define GAP 0.1
 
 static const float k2Pi = TWO_PI;
 
@@ -215,6 +214,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
             self.step = other.step;
             self.current = other.current;
             self.max = other.max;
+            self.gap = other.gap;
         }
     }
 
@@ -246,6 +246,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
         || [key isEqualToString:@"drawFullTrack"]
         || [key isEqualToString:@"startAngle"]
         || [key isEqualToString:@"endPoint"]
+        || [key isEqualToString:@"gap"]
         || [key isEqualToString:@"step"]
         || [key isEqualToString:@"current"]
         || [key isEqualToString:@"max"])
@@ -356,9 +357,9 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
     }
     else
     {
-        float gap = (self.step * GAP) / self.max;
+        float gap = (self.step * self.gap) / self.max;
         float gapAngle = gap * k2Pi;
-        float incr = (self.step - (self.step * GAP)) / self.max;
+        float incr = (self.step - (self.step * self.gap)) / self.max;
         float stepAngle = incr * k2Pi;
         float startAngle = self.startAngle + (gapAngle * .5f);
         for (float f = .0f; f < self.current; f += self.step)

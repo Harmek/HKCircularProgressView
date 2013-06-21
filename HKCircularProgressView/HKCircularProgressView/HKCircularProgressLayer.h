@@ -80,8 +80,8 @@
 @property (nonatomic, assign) BOOL                                  drawFullTrack;
 @property (nonatomic, strong) id<HKCircularProgressEndPointDrawer>  endPoint;
 
-@property (nonatomic, assign) float             step;
-@property (nonatomic, assign) float             max;
-@property (nonatomic, assign) float             current;
-
+@property (nonatomic, assign) CGFloat           step;
+@property (nonatomic, assign) CGFloat           max;
+@property (nonatomic, assign) CGFloat           current;
+@property (nonatomic, assign) CGFloat           gap;
 @end

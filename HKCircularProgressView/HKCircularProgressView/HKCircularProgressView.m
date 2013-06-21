@@ -30,9 +30,6 @@
 #import "HKCircularProgressView.h"
 
 @interface HKCircularProgressView ()
-
-- (void) defaultInit;
-
 @end
 
 @implementation HKCircularProgressView
@@ -42,7 +39,7 @@
     self = [super initWithFrame:frame];
     if (self)
     {
-        [self defaultInit];
+        [self _defaultInit];
     }
 
     return self;
@@ -53,7 +50,7 @@
     self = [super initWithCoder:aDecoder];
     if (self)
     {
-        [self defaultInit];
+        [self _defaultInit];
     }
 
     return self;
@@ -64,7 +61,7 @@
     self = [super init];
     if (self)
     {
-        [self defaultInit];
+        [self _defaultInit];
     }
 
     return self;
@@ -75,7 +72,7 @@
     return [HKCircularProgressLayer class];
 }
 
-- (void)defaultInit
+- (void)_defaultInit
 {
     self.backgroundColor = [UIColor clearColor];
     self.opaque = NO;
@@ -89,6 +86,7 @@
     self.drawFullTrack = NO;
     self.animationDuration = 0.25f;
     self.startAngle = - M_PI_2;
+    self.gap = .1;
     [self setMax:1.0f animated:NO];
     [self setCurrent:0.0f animated:NO];
     [self setStep:0.0f];
@@ -238,6 +236,16 @@
     }
 }
 
+- (void)setGap:(CGFloat)gap
+{
+    if (gap != self.gap)
+    {
+        HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+        layer.gap = gap;
+        [layer setNeedsDisplay];
+    }
+}
+
 - (void)setStep:(float)step
 {
     if (step != self.step)
@@ -329,6 +337,13 @@
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.endPoint;
+}
+
+- (CGFloat)gap
+{
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+
+    return layer.gap;
 }
 
 - (float)step
