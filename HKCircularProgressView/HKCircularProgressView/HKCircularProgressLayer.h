@@ -32,22 +32,34 @@
 
 @protocol HKCircularProgressEndPointDrawer <NSObject>
 
+/**
+ * Lower angle where the marker should be drawn.
+ */
 - (CGFloat)startPointAngleWithCenter:(CGPoint)center
                               radius:(CGFloat)radius
                          innerRadius:(CGFloat)innerRadius
                                angle:(CGFloat)angle;
 
+/**
+ * Upper angle where the marker should be drawn.
+ */
 - (CGFloat)endPointAngleWithCenter:(CGPoint)center
                             radius:(CGFloat)radius
                        innerRadius:(CGFloat)innerRadius
                              angle:(CGFloat)angle;
 
+/**
+ * Draws the lower end-point of the marker
+ */
 - (void)drawStartPointInContext:(CGContextRef)ctx
                      withCenter:(CGPoint)center
                       andRadius:(CGFloat)radius
                  andInnerRadius:(CGFloat)innerRadius
                         atAngle:(CGFloat)angle;
 
+/**
+ * Draws the upper end-point of the marker.
+ */
 - (void)drawEndPointInContext:(CGContextRef)ctx
                    withCenter:(CGPoint)center
                     andRadius:(CGFloat)radius

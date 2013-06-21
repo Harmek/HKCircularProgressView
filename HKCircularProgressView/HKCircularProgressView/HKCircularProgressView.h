@@ -51,19 +51,69 @@
  */
 - (void)stopAnimating;
 
+/**
+ * Color of the progress circular bar
+ */
 @property (nonatomic) UIColor                               *progressTintColor  UI_APPEARANCE_SELECTOR;
+
+/**
+ * Color of the track (drawn under the progress)
+ */
 @property (nonatomic) UIColor                               *trackTintColor     UI_APPEARANCE_SELECTOR;
+
+/**
+ * Color of the outline
+ */
 @property (nonatomic) UIColor                               *outlineTintColor   UI_APPEARANCE_SELECTOR;
+
+/**
+ * Width of the outline
+ */
 @property (nonatomic) CGFloat                               outlineWidth        UI_APPEARANCE_SELECTOR;
+
+/**
+ * Duration of the animation
+ */
 @property (nonatomic) CFTimeInterval                        animationDuration   UI_APPEARANCE_SELECTOR;
+
+/**
+ * Percentage of the circle that will be filled (1 draws a full circle, ]0..1[ draws a ring).
+ */
 @property (nonatomic) float                                 fillRadius          UI_APPEARANCE_SELECTOR;
+
+/**
+ * Angle, in radius, where the progress starts.
+ */
 @property (nonatomic) float                                 startAngle          UI_APPEARANCE_SELECTOR;
+
+/**
+ * Determines whether the track is drawn a complete circle or if it uses the fillRadius parameter.
+ */
 @property (nonatomic) BOOL                                  drawFullTrack       UI_APPEARANCE_SELECTOR;
+
+/**
+ * Object that is responsible for drawing the end points of the circular progress.
+ */
 @property (nonatomic) id<HKCircularProgressEndPointDrawer>  endPoint            UI_APPEARANCE_SELECTOR;
+
+/**
+ * Value between 0 and 1 determining the gap between 2 segments. Only used if the step parameter is used.
+ */
 @property (nonatomic) CGFloat                               gap                 UI_APPEARANCE_SELECTOR;
 
+/**
+ * If 0 then it will be a continuous progress. If not, it will be a discrete progress view with (max/step) markers.
+ */
 @property (nonatomic) float             step;
+
+/**
+ * Maximum value.
+ */
 @property (nonatomic) float             max;
+
+/**
+ * Current value.
+ */
 @property (nonatomic) float             current;
 
 @end

@@ -115,7 +115,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 {
     CGPoint tipPoint = CGPointZero;
     CGAffineTransform transform = CGAffineTransformIdentity;
-    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, NO, &tipPoint, &transform);
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, YES, &tipPoint, &transform);
     CGContextAddLineToPoint(ctx, tipPoint.x, tipPoint.y);
     CGFloat x = center.x + innerRadius * cos(angle);
     CGFloat y = center.y + innerRadius * sin(angle);
@@ -130,7 +130,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 {
     CGPoint tipPoint = CGPointZero;
     CGAffineTransform transform = CGAffineTransformIdentity;
-    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, YES, &tipPoint, &transform);
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, NO, &tipPoint, &transform);
     CGContextAddLineToPoint(ctx, tipPoint.x, tipPoint.y);
     CGFloat x = center.x + innerRadius * cos(angle);
     CGFloat y = center.y + innerRadius * sin(angle);
@@ -165,7 +165,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 {
     CGPoint tipPoint = CGPointZero;
     CGAffineTransform transform = CGAffineTransformIdentity;
-    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, NO, &tipPoint, &transform);
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, YES, &tipPoint, &transform);
     CGFloat x = center.x + innerRadius * cos(angle);
     CGFloat y = center.y + innerRadius * sin(angle);
     CGContextAddQuadCurveToPoint(ctx, tipPoint.x, tipPoint.y, x, y);
@@ -179,7 +179,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 {
     CGPoint tipPoint = CGPointZero;
     CGAffineTransform transform = CGAffineTransformIdentity;
-    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, YES, &tipPoint, &transform);
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, NO, &tipPoint, &transform);
     CGFloat x = center.x + innerRadius * cos(angle);
     CGFloat y = center.y + innerRadius * sin(angle);
     CGContextAddQuadCurveToPoint(ctx, tipPoint.x, tipPoint.y, x, y);
@@ -301,18 +301,19 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 
     CGContextAddArc(ctx, center.x, center.y, radius, startAngle, destAngle, 0);
 
-    [self.endPoint drawStartPointInContext:ctx
-                                withCenter:center
-                                 andRadius:radius
-                            andInnerRadius:innerRadius
-                                   atAngle:destAngle];
-    CGContextAddArc(ctx, center.x, center.y, innerRadius, destAngle, startAngle, 1);
-
     [self.endPoint drawEndPointInContext:ctx
                               withCenter:center
-                               andRadius:innerRadius
-                          andInnerRadius:radius
-                                 atAngle:startAngle];
+                               andRadius:radius
+                          andInnerRadius:innerRadius
+                                 atAngle:destAngle];
+    
+    CGContextAddArc(ctx, center.x, center.y, innerRadius, destAngle, startAngle, 1);
+
+    [self.endPoint drawStartPointInContext:ctx
+                                withCenter:center
+                                 andRadius:innerRadius
+                            andInnerRadius:radius
+                                   atAngle:startAngle];
 
     CGContextClosePath(ctx);
     if (fill)

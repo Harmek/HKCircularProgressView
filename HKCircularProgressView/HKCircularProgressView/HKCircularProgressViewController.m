@@ -32,7 +32,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface HKCircularProgressViewController ()
-+ (void)addShadowToView:(UIView *)view;
 @end
 
 @implementation HKCircularProgressViewController
