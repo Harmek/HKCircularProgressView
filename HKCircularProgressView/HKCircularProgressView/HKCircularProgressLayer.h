@@ -32,12 +32,27 @@
 
 @protocol HKCircularProgressEndPointDrawer <NSObject>
 
+- (CGFloat)startPointAngleWithCenter:(CGPoint)center
+                              radius:(CGFloat)radius
+                         innerRadius:(CGFloat)innerRadius
+                               angle:(CGFloat)angle;
+
+- (CGFloat)endPointAngleWithCenter:(CGPoint)center
+                            radius:(CGFloat)radius
+                       innerRadius:(CGFloat)innerRadius
+                             angle:(CGFloat)angle;
+
+- (void)drawStartPointInContext:(CGContextRef)ctx
+                     withCenter:(CGPoint)center
+                      andRadius:(CGFloat)radius
+                 andInnerRadius:(CGFloat)innerRadius
+                        atAngle:(CGFloat)angle;
+
 - (void)drawEndPointInContext:(CGContextRef)ctx
                    withCenter:(CGPoint)center
                     andRadius:(CGFloat)radius
                andInnerRadius:(CGFloat)innerRadius
-                      atAngle:(CGFloat)angle
-                    clockwise:(int)clockwise;
+                      atAngle:(CGFloat)angle;
 
 @end
 
@@ -55,18 +70,18 @@
 
 @interface HKCircularProgressLayer : CALayer
 
-@property (nonatomic) UIColor                           *progressTintColor;
-@property (nonatomic) UIColor                           *trackTintColor;
-@property (nonatomic) UIColor                           *outlineTintColor;
-@property (nonatomic) CGFloat                           outlineWidth;
-@property (nonatomic) CFTimeInterval                    animationDuration;
-@property (nonatomic) float                             fillRadius;
-@property (nonatomic) float                             startAngle;
-@property (nonatomic) BOOL                              drawFullTrack;
-@property (nonatomic) id<HKCircularProgressEndPointDrawer> endPoint;
+@property (nonatomic, strong) UIColor                               *progressTintColor;
+@property (nonatomic, strong) UIColor                               *trackTintColor;
+@property (nonatomic, strong) UIColor                               *outlineTintColor;
+@property (nonatomic, assign) CGFloat                               outlineWidth;
+@property (nonatomic, assign) CFTimeInterval                        animationDuration;
+@property (nonatomic, assign) float                                 fillRadius;
+@property (nonatomic, assign) float                                 startAngle;
+@property (nonatomic, assign) BOOL                                  drawFullTrack;
+@property (nonatomic, strong) id<HKCircularProgressEndPointDrawer>  endPoint;
 
-@property (nonatomic) float             step;
-@property (nonatomic) float             max;
-@property (nonatomic) float             current;
+@property (nonatomic, assign) float             step;
+@property (nonatomic, assign) float             max;
+@property (nonatomic, assign) float             current;
 
 @end

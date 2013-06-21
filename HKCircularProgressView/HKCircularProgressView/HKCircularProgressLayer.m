@@ -36,12 +36,35 @@ static const float k2Pi = TWO_PI;
 
 @implementation HKCircularProgressEndPointFlat
 
+- (CGFloat)startPointAngleWithCenter:(CGPoint)center
+                              radius:(CGFloat)radius
+                         innerRadius:(CGFloat)innerRadius
+                               angle:(CGFloat)angle
+{
+    return angle;
+}
+
+- (CGFloat)endPointAngleWithCenter:(CGPoint)center
+                            radius:(CGFloat)radius
+                       innerRadius:(CGFloat)innerRadius
+                             angle:(CGFloat)angle
+{
+    return angle;
+}
+
+- (void)drawStartPointInContext:(CGContextRef)ctx
+                     withCenter:(CGPoint)center
+                      andRadius:(CGFloat)radius
+                 andInnerRadius:(CGFloat)innerRadius
+                        atAngle:(CGFloat)angle
+{
+}
+
 - (void)drawEndPointInContext:(CGContextRef)ctx
                    withCenter:(CGPoint)center
                     andRadius:(CGFloat)radius
                andInnerRadius:(CGFloat)innerRadius
                       atAngle:(CGFloat)angle
-                    clockwise:(int)clockwise
 {
 }
 
@@ -51,7 +74,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
                                                CGFloat radius,
                                                CGFloat innerRadius,
                                                CGFloat angle,
-                                               int clockwise,
+                                               BOOL clockwise,
                                                CGPoint *outPoint,
                                                CGAffineTransform *outTransform)
 {
@@ -69,16 +92,46 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 
 @implementation HKCircularProgressEndPointSpike
 
+- (CGFloat)startPointAngleWithCenter:(CGPoint)center
+                              radius:(CGFloat)radius
+                         innerRadius:(CGFloat)innerRadius
+                               angle:(CGFloat)angle
+{
+    return angle;
+}
+
+- (CGFloat)endPointAngleWithCenter:(CGPoint)center
+                            radius:(CGFloat)radius
+                       innerRadius:(CGFloat)innerRadius
+                             angle:(CGFloat)angle
+{
+    return angle;
+}
+
+- (void)drawStartPointInContext:(CGContextRef)ctx
+                     withCenter:(CGPoint)center
+                      andRadius:(CGFloat)radius
+                 andInnerRadius:(CGFloat)innerRadius
+                        atAngle:(CGFloat)angle
+{
+    CGPoint tipPoint = CGPointZero;
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, NO, &tipPoint, &transform);
+    CGContextAddLineToPoint(ctx, tipPoint.x, tipPoint.y);
+    CGFloat x = center.x + innerRadius * cos(angle);
+    CGFloat y = center.y + innerRadius * sin(angle);
+    CGContextAddLineToPoint(ctx, x, y);
+}
+
 - (void)drawEndPointInContext:(CGContextRef)ctx
                    withCenter:(CGPoint)center
                     andRadius:(CGFloat)radius
                andInnerRadius:(CGFloat)innerRadius
                       atAngle:(CGFloat)angle
-                    clockwise:(int)clockwise
 {
     CGPoint tipPoint = CGPointZero;
     CGAffineTransform transform = CGAffineTransformIdentity;
-    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, clockwise, &tipPoint, &transform);
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, YES, &tipPoint, &transform);
     CGContextAddLineToPoint(ctx, tipPoint.x, tipPoint.y);
     CGFloat x = center.x + innerRadius * cos(angle);
     CGFloat y = center.y + innerRadius * sin(angle);
@@ -89,16 +142,45 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 
 @implementation HKCircularProgressEndPointRound
 
+- (CGFloat)startPointAngleWithCenter:(CGPoint)center
+                              radius:(CGFloat)radius
+                         innerRadius:(CGFloat)innerRadius
+                               angle:(CGFloat)angle
+{
+    return angle;
+}
+
+- (CGFloat)endPointAngleWithCenter:(CGPoint)center
+                            radius:(CGFloat)radius
+                       innerRadius:(CGFloat)innerRadius
+                             angle:(CGFloat)angle
+{
+    return angle;
+}
+
+- (void)drawStartPointInContext:(CGContextRef)ctx
+                     withCenter:(CGPoint)center
+                      andRadius:(CGFloat)radius
+                 andInnerRadius:(CGFloat)innerRadius
+                        atAngle:(CGFloat)angle
+{
+    CGPoint tipPoint = CGPointZero;
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, NO, &tipPoint, &transform);
+    CGFloat x = center.x + innerRadius * cos(angle);
+    CGFloat y = center.y + innerRadius * sin(angle);
+    CGContextAddQuadCurveToPoint(ctx, tipPoint.x, tipPoint.y, x, y);
+}
+
 - (void)drawEndPointInContext:(CGContextRef)ctx
                    withCenter:(CGPoint)center
                     andRadius:(CGFloat)radius
                andInnerRadius:(CGFloat)innerRadius
                       atAngle:(CGFloat)angle
-                    clockwise:(int)clockwise
 {
     CGPoint tipPoint = CGPointZero;
     CGAffineTransform transform = CGAffineTransformIdentity;
-    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, clockwise, &tipPoint, &transform);
+    getTipPointAndTransformForEndPoint(center, radius, innerRadius, angle, YES, &tipPoint, &transform);
     CGFloat x = center.x + innerRadius * cos(angle);
     CGFloat y = center.y + innerRadius * sin(angle);
     CGContextAddQuadCurveToPoint(ctx, tipPoint.x, tipPoint.y, x, y);
@@ -108,21 +190,6 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 
 @interface HKCircularProgressLayer ()
 
-- (void)drawTrackInContext:(CGContextRef)ctx
-                withCenter:(CGPoint)center
-                 andRadius:(CGFloat)radius;
-
-- (void)drawProgressInContext:(CGContextRef)ctx
-                     atCenter:(CGPoint)center
-                   withRadius:(CGFloat)radius;
-
-- (void)drawArcInContext:(CGContextRef)ctx
-              withCenter:(CGPoint)center
-               andRadius:(CGFloat)radius
-          andInnerRadius:(CGFloat)innerRadius
-                 between:(CGFloat)startAngle
-                     and:(CGFloat)destAngle
-                    fill:(BOOL)fill;
 @end
 
 @implementation HKCircularProgressLayer
@@ -222,22 +289,29 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
                      and:(CGFloat)destAngle
                     fill:(BOOL)fill
 {
+    startAngle = [self.endPoint startPointAngleWithCenter:center
+                                                   radius:radius
+                                              innerRadius:innerRadius
+                                                    angle:startAngle];
+    destAngle = [self.endPoint endPointAngleWithCenter:center
+                                                radius:radius
+                                           innerRadius:innerRadius
+                                                 angle:destAngle];
+
     CGContextAddArc(ctx, center.x, center.y, radius, startAngle, destAngle, 0);
 
-    [self.endPoint drawEndPointInContext:ctx
-                              withCenter:center
-                               andRadius:radius
-                          andInnerRadius:innerRadius
-                                 atAngle:destAngle
-                               clockwise:0];
+    [self.endPoint drawStartPointInContext:ctx
+                                withCenter:center
+                                 andRadius:radius
+                            andInnerRadius:innerRadius
+                                   atAngle:destAngle];
     CGContextAddArc(ctx, center.x, center.y, innerRadius, destAngle, startAngle, 1);
 
     [self.endPoint drawEndPointInContext:ctx
                               withCenter:center
                                andRadius:innerRadius
                           andInnerRadius:radius
-                                 atAngle:startAngle
-                               clockwise:1];
+                                 atAngle:startAngle];
 
     CGContextClosePath(ctx);
     if (fill)
