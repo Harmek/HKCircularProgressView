@@ -46,9 +46,10 @@
 										<reference key="NSNextResponder" ref="55563912"/>
 										<int key="NSvFlags">1298</int>
 										<object class="NSPSMatrix" key="NSFrameMatrix"/>
-										<string key="NSFrame">{{43, 42}, {115, 115}}</string>
+										<string key="NSFrame">{{25, 25}, {100, 100}}</string>
 										<reference key="NSSuperview" ref="55563912"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="570912190"/>
 										<object class="NSColor" key="IBUIBackgroundColor">
 											<int key="NSColorSpace">1</int>
 											<bytes key="NSRGB">MSAwIDAAA</bytes>
@@ -57,7 +58,7 @@
 									</object>
 								</array>
 								<object class="NSPSMatrix" key="NSFrameMatrix"/>
-								<string key="NSFrame">{{45, 45}, {200, 200}}</string>
+								<string key="NSFrame">{{25, 25}, {150, 150}}</string>
 								<reference key="NSSuperview" ref="9681729"/>
 								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="232465358"/>
@@ -69,7 +70,7 @@
 							</object>
 						</array>
 						<object class="NSPSMatrix" key="NSFrameMatrix"/>
-						<string key="NSFrame">{{15, 129}, {290, 290}}</string>
+						<string key="NSFrame">{{60, 45}, {200, 200}}</string>
 						<reference key="NSSuperview" ref="84040699"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="55563912"/>
@@ -79,6 +80,21 @@
 							<object class="NSColorSpace" key="NSCustomColorSpace" id="969973959">
 								<int key="NSID">2</int>
 							</object>
+						</object>
+						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+					</object>
+					<object class="IBUIView" id="570912190">
+						<reference key="NSNextResponder" ref="84040699"/>
+						<int key="NSvFlags">1316</int>
+						<string key="NSFrame">{{60, 303}, {200, 200}}</string>
+						<reference key="NSSuperview" ref="84040699"/>
+						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
+						<string key="NSReuseIdentifierKey">_NS:9</string>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+							<reference key="NSCustomColorSpace" ref="969973959"/>
 						</object>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 					</object>
@@ -150,6 +166,14 @@
 					</object>
 					<string key="id">7</string>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">concentricProgressView</string>
+						<reference key="source" ref="485806126"/>
+						<reference key="destination" ref="570912190"/>
+					</object>
+					<string key="id">f1F-Da-Gwe</string>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -175,6 +199,7 @@
 						<reference key="object" ref="84040699"/>
 						<array class="NSMutableArray" key="children">
 							<reference ref="9681729"/>
+							<reference ref="570912190"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -199,10 +224,15 @@
 						<reference key="object" ref="232465358"/>
 						<reference key="parent" ref="55563912"/>
 					</object>
+					<object class="IBObjectRecord">
+						<string key="id">a0V-Zh-fcH</string>
+						<reference key="object" ref="570912190"/>
+						<reference key="parent" ref="84040699"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
-				<string key="-1.CustomClassName">HKViewController</string>
+				<string key="-1.CustomClassName">HKCircularProgressViewController</string>
 				<string key="-1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<boolean value="NO" key="-1.showNotes"/>
 				<string key="-2.CustomClassName">UIResponder</string>
@@ -223,6 +253,8 @@
 				<string key="8.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<reference key="8.IBUserGuides" ref="0"/>
 				<boolean value="NO" key="8.showNotes"/>
+				<string key="a0V-Zh-fcH.CustomClassName">HKCircularProgressView</string>
+				<string key="a0V-Zh-fcH.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
@@ -237,6 +269,46 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/HKCircularProgressView.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">HKCircularProgressViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="circularProgressView">HKCircularProgressView</string>
+						<string key="circularProgressView2">HKCircularProgressView</string>
+						<string key="circularProgressView3">HKCircularProgressView</string>
+						<string key="concentricProgressView">HKConcentricProgressView</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="circularProgressView">
+							<string key="name">circularProgressView</string>
+							<string key="candidateClassName">HKCircularProgressView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="circularProgressView2">
+							<string key="name">circularProgressView2</string>
+							<string key="candidateClassName">HKCircularProgressView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="circularProgressView3">
+							<string key="name">circularProgressView3</string>
+							<string key="candidateClassName">HKCircularProgressView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="concentricProgressView">
+							<string key="name">concentricProgressView</string>
+							<string key="candidateClassName">HKConcentricProgressView</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/HKCircularProgressViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">HKConcentricProgressView</string>
+					<string key="superclassName">UIView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/HKConcentricProgressView.h</string>
 					</object>
 				</object>
 			</array>

@@ -80,6 +80,14 @@
 
 @end
 
+typedef NS_ENUM(NSUInteger, HKConcentricProgressionType)
+{
+    HKConcentricProgressionTypeConcentric = 0,
+    HKConcentricProgressionTypeExcentric,
+
+    HKConcentricProgressionTypeMax
+};
+
 @interface HKCircularProgressLayer : CALayer
 
 @property (nonatomic, strong) UIColor                               *progressTintColor;
@@ -87,13 +95,16 @@
 @property (nonatomic, strong) UIColor                               *outlineTintColor;
 @property (nonatomic, assign) CGFloat                               outlineWidth;
 @property (nonatomic, assign) CFTimeInterval                        animationDuration;
-@property (nonatomic, assign) float                                 fillRadius;
-@property (nonatomic, assign) float                                 startAngle;
+@property (nonatomic, assign) CGFloat                               fillRadius;
+@property (nonatomic, assign) CGFloat                               fillRadiusPx;
+@property (nonatomic, assign) CGFloat                               startAngle;
 @property (nonatomic, assign) BOOL                                  drawFullTrack;
 @property (nonatomic, strong) id<HKCircularProgressEndPointDrawer>  endPoint;
 
-@property (nonatomic, assign) CGFloat           step;
-@property (nonatomic, assign) CGFloat           max;
-@property (nonatomic, assign) CGFloat           current;
-@property (nonatomic, assign) CGFloat           gap;
+@property (nonatomic, assign) CGFloat                       concentricStep;
+@property (nonatomic, assign) HKConcentricProgressionType   concentricProgressionType;
+@property (nonatomic, assign) CGFloat                       step;
+@property (nonatomic, assign) CGFloat                       max;
+@property (nonatomic, assign) CGFloat                       current;
+@property (nonatomic, assign) CGFloat                       gap;
 @end

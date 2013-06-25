@@ -30,10 +30,12 @@
 #import <UIKit/UIKit.h>
 
 @class HKCircularProgressView;
+@class HKConcentricProgressView;
 @interface HKCircularProgressViewController : UIViewController
 
-@property (strong, nonatomic) IBOutlet HKCircularProgressView *circularProgressView;
-@property (strong, nonatomic) IBOutlet HKCircularProgressView *circularProgressView2;
-@property (strong, nonatomic) IBOutlet HKCircularProgressView *circularProgressView3;
+@property (weak, nonatomic) IBOutlet HKCircularProgressView *circularProgressView;
+@property (weak, nonatomic) IBOutlet HKCircularProgressView *circularProgressView2;
+@property (weak, nonatomic) IBOutlet HKCircularProgressView *circularProgressView3;
+@property (weak, nonatomic) IBOutlet HKCircularProgressView *concentricProgressView;
 
 @end

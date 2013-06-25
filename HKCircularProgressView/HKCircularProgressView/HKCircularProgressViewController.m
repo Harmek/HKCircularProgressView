@@ -50,7 +50,7 @@
 
     self.circularProgressView.progressTintColor = [UIColor cyanColor];
     self.circularProgressView.max = 1.0f;
-    self.circularProgressView.animationDuration = 5.0f;
+    self.circularProgressView.fillRadiusPx = 25;
     self.circularProgressView.step = 0.1f;
     self.circularProgressView.startAngle = (M_PI * 3) * 0.5;
     self.circularProgressView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -59,17 +59,23 @@
     self.circularProgressView.endPoint = [[HKCircularProgressEndPointSpike alloc] init];
 
     self.circularProgressView2.animationDuration = 5.0f;
-    self.circularProgressView2.fillRadius = .35f;
+    self.circularProgressView2.fillRadiusPx = 25;
     self.circularProgressView2.progressTintColor = [UIColor magentaColor];
     self.circularProgressView2.translatesAutoresizingMaskIntoConstraints = NO;
     self.circularProgressView2.endPoint = [[HKCircularProgressEndPointRound alloc] init];
     
-    self.circularProgressView3.animationDuration = 5.0f;
-    self.circularProgressView3.fillRadius = 1.0f;
+    self.circularProgressView3.fillRadius = 1;
     self.circularProgressView3.progressTintColor = [UIColor yellowColor];
     self.circularProgressView3.translatesAutoresizingMaskIntoConstraints = NO;
 
     [HKCircularProgressViewController addShadowToView:self.circularProgressView];
+
+    self.concentricProgressView.max = 1;
+    self.concentricProgressView.concentricStep = .3;
+    self.concentricProgressView.step = .02;
+    self.concentricProgressView.progressTintColor = [UIColor brownColor];
+    self.concentricProgressView.concentricProgressionType = HKConcentricProgressionTypeExcentric;
+    [[HKCircularProgressView appearance] setAnimationDuration:5];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -81,6 +87,8 @@
                                   animated:YES];
     [self.circularProgressView3 setCurrent:1.0f
                                   animated:YES];
+    [self.concentricProgressView setCurrent:1.0f
+                                   animated:YES];
 }
 
 - (void)viewDidUnload {

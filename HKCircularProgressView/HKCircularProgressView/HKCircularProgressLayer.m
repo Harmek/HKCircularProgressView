@@ -187,6 +187,8 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 
 @end
 
+typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
+
 @interface HKCircularProgressLayer ()
 
 @end
@@ -211,6 +213,8 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
             self.startAngle = other.startAngle;
             self.endPoint = other.endPoint;
 
+            self.concentricStep = other.concentricStep;
+            self.concentricProgressionType = other.concentricProgressionType;
             self.step = other.step;
             self.current = other.current;
             self.max = other.max;
@@ -236,6 +240,19 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
     return _endPoint;
 }
 
+- (void)setFillRadiusPx:(float)fillRadiusPx
+{
+    CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) * .5f - (2. * self.outlineWidth);
+    [self setFillRadius:fillRadiusPx / radius];
+}
+
+- (CGFloat)fillRadiusPx
+{
+    CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) * .5f - (2. * self.outlineWidth);
+
+    return radius * self.fillRadius;
+}
+
 + (BOOL)needsDisplayForKey:(NSString *)key
 {
     if ([key isEqualToString:@"progressTintColor"]
@@ -243,10 +260,12 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
         || [key isEqualToString:@"outlineTintColor"]
         || [key isEqualToString:@"outlineWidth"]
         || [key isEqualToString:@"fillRadius"]
+        || [key isEqualToString:@"fillRadiusPx"]
         || [key isEqualToString:@"drawFullTrack"]
         || [key isEqualToString:@"startAngle"]
         || [key isEqualToString:@"endPoint"]
         || [key isEqualToString:@"gap"]
+        || [key isEqualToString:@"concentricStep"]
         || [key isEqualToString:@"step"]
         || [key isEqualToString:@"current"]
         || [key isEqualToString:@"max"])
@@ -260,6 +279,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 - (void)drawTrackInContext:(CGContextRef)ctx
                 withCenter:(CGPoint)center
                  andRadius:(CGFloat)radius
+                fillRadius:(CGFloat)fillRadius
 {
     if (self.drawFullTrack)
     {
@@ -269,7 +289,7 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
     else
     {
         CGContextAddArc(ctx, center.x, center.y, radius, 0, k2Pi, 0);
-        CGFloat innerRadius = radius * (1.f - self.fillRadius);
+        CGFloat innerRadius = radius * (1.f - fillRadius);
 
         CGFloat x = center.x + innerRadius;
         CGFloat y = center.y;
@@ -325,6 +345,9 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
 - (void)drawProgressInContext:(CGContextRef)ctx
                      atCenter:(CGPoint)center
                    withRadius:(CGFloat)radius
+                      current:(CGFloat)current
+                          max:(CGFloat)max
+                   fillRadius:(CGFloat)fillRadius
 {
     CGContextSetFillColorWithColor(ctx, self.progressTintColor.CGColor);
     CGContextSetStrokeColorWithColor(ctx, self.outlineTintColor
@@ -332,11 +355,11 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
                                      : self.progressTintColor.CGColor);
     CGContextSetLineWidth(ctx, self.outlineWidth);
     CGFloat destAngle = .0f;
-    CGFloat innerRadius = radius * (1.f - self.fillRadius);
+    CGFloat innerRadius = radius * (1.f - fillRadius);
 
     if (self.step == .0f)
     {
-        CGFloat progress = self.current / self.max;
+        CGFloat progress = current / max;
         destAngle = self.startAngle + progress * k2Pi;
         [self drawArcInContext:ctx
                     withCenter:center
@@ -358,12 +381,12 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
     }
     else
     {
-        float gap = (self.step * self.gap) / self.max;
+        float gap = (self.step * self.gap) / max;
         float gapAngle = gap * k2Pi;
-        float incr = (self.step - (self.step * self.gap)) / self.max;
+        float incr = (self.step - (self.step * self.gap)) / max;
         float stepAngle = incr * k2Pi;
         float startAngle = self.startAngle + (gapAngle * .5f);
-        for (float f = .0f; f < self.current; f += self.step)
+        for (float f = .0f; f < current; f += self.step)
         {
             destAngle = startAngle + stepAngle;
             [self drawArcInContext:ctx
@@ -376,9 +399,9 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
             startAngle += stepAngle + gapAngle;
         }
 
-        if (self.outlineWidth > .0 && self.max)
+        if (self.outlineWidth > .0 && max)
         {
-            for (float f = self.current + self.step; f <= self.max; f += self.step)
+            for (float f = current + self.step; f <= max; f += self.step)
             {
                 destAngle = startAngle + stepAngle;
                 [self drawArcInContext:ctx
@@ -399,8 +422,59 @@ static void getTipPointAndTransformForEndPoint(CGPoint center,
     CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) * .5f - (2. * self.outlineWidth);
     CGPoint center = CGPointMake(self.bounds.size.width * .5f, self.bounds.size.height * .5f);
 
-    [self drawTrackInContext:ctx withCenter:center andRadius:radius];
-    [self drawProgressInContext:ctx atCenter:center withRadius:radius];
+    if (self.concentricStep == .0)
+    {
+        [self drawTrackInContext:ctx
+                      withCenter:center
+                       andRadius:radius
+                      fillRadius:self.fillRadius];
+        [self drawProgressInContext:ctx
+                           atCenter:center
+                         withRadius:radius
+                            current:self.current
+                                max:self.max
+                         fillRadius:self.fillRadius];
+    }
+    else
+    {
+        CGFloat deltaMax = self.max / self.concentricStep;
+        NSUInteger nbCirclesNeeded = ceil(deltaMax);
+        CGFloat deltaRadius = radius / nbCirclesNeeded;
+        HKConcentricProgressionFunction changeRadius = nil;
+        if (self.concentricProgressionType == HKConcentricProgressionTypeConcentric)
+        {
+            changeRadius = ^CGFloat (CGFloat oldRadius, CGFloat deltaRadius){
+                return oldRadius - deltaRadius;
+            };
+        }
+        else
+        {
+            changeRadius = ^CGFloat (CGFloat oldRadius, CGFloat deltaRadius){
+                return oldRadius + deltaRadius;
+            };
+            radius = deltaRadius;
+        }
+        [self drawTrackInContext:ctx withCenter:center andRadius:radius fillRadius:1];
+
+        CGFloat current = self.current;
+        for (; current > self.concentricStep; current -= self.concentricStep)
+        {
+            [self drawProgressInContext:ctx
+                               atCenter:center
+                             withRadius:radius
+                                current:self.concentricStep
+                                    max:self.concentricStep
+                             fillRadius:(deltaRadius / radius)];
+            radius = changeRadius(radius, deltaRadius);
+        }
+
+        [self drawProgressInContext:ctx
+                           atCenter:center
+                         withRadius:radius
+                            current:current
+                                max:self.concentricStep
+                         fillRadius:deltaRadius / radius];
+    }
 }
 
 @end

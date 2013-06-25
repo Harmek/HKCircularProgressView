@@ -90,6 +90,7 @@
     [self setMax:1.0f animated:NO];
     [self setCurrent:0.0f animated:NO];
     [self setStep:0.0f];
+    [self setConcentricStep:.0];
 }
 
 - (void)startAnimating
@@ -177,6 +178,36 @@
     [self setFillRadius:fillRadius animated:NO];
 }
 
+- (void)setFillRadiusPx:(float)fillRadiusPx
+               animated:(BOOL)animated
+{
+    if (self.fillRadiusPx == fillRadiusPx)
+    {
+        return;
+    }
+
+    fillRadiusPx = MAX(0.0f, fillRadiusPx);
+
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+    if (animated && self.animationDuration > 0.0f)
+    {
+        CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"fillRadiusPx"];
+        animation.duration = self.animationDuration;
+        animation.fromValue = [NSNumber numberWithFloat:self.fillRadiusPx];
+        animation.toValue = [NSNumber numberWithFloat:fillRadiusPx];
+        animation.delegate = self;
+        [self.layer addAnimation:animation forKey:@"fillRadiusPxAnimation"];
+    }
+
+    layer.fillRadiusPx = fillRadiusPx;
+    [layer setNeedsDisplay];
+}
+
+- (void)setFillRadiusPx:(float)fillRadiusPx
+{
+    [self setFillRadiusPx:fillRadiusPx animated:NO];
+}
+
 - (void)setCurrent:(float)current
           animated:(BOOL)animated
 {
@@ -242,6 +273,26 @@
     {
         HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
         layer.gap = gap;
+        [layer setNeedsDisplay];
+    }
+}
+
+- (void)setConcentricStep:(CGFloat)concentricStep
+{
+    if (concentricStep != self.concentricStep)
+    {
+        HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+        layer.concentricStep = concentricStep;
+        [layer setNeedsDisplay];
+    }
+}
+
+- (void)setConcentricProgressionType:(HKConcentricProgressionType)concentricProgressionType
+{
+    if (concentricProgressionType != self.concentricProgressionType)
+    {
+        HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+        layer.concentricProgressionType = concentricProgressionType;
         [layer setNeedsDisplay];
     }
 }
@@ -318,6 +369,13 @@
     return layer.fillRadius;
 }
 
+- (float)fillRadiusPx
+{
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+
+    return layer.fillRadiusPx;
+}
+
 - (float)startAngle
 {
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
@@ -344,6 +402,20 @@
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.gap;
+}
+
+- (float)concentricStep
+{
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+
+    return layer.concentricStep;
+}
+
+- (HKConcentricProgressionType)concentricProgressionType
+{
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+
+    return layer.concentricProgressionType;
 }
 
 - (float)step

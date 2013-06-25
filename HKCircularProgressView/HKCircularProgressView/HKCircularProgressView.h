@@ -82,6 +82,11 @@
 @property (nonatomic) float                                 fillRadius          UI_APPEARANCE_SELECTOR;
 
 /**
+ * Amount of the circle that will be filled in pixels (thickness of the ring).
+ */
+@property (nonatomic) float                                 fillRadiusPx        UI_APPEARANCE_SELECTOR;
+
+/**
  * Angle, in radius, where the progress starts.
  */
 @property (nonatomic) float                                 startAngle          UI_APPEARANCE_SELECTOR;
@@ -101,6 +106,9 @@
  */
 @property (nonatomic) CGFloat                               gap                 UI_APPEARANCE_SELECTOR;
 
+@property (nonatomic) CGFloat           concentricStep;
+
+@property (nonatomic) HKConcentricProgressionType concentricProgressionType;
 /**
  * If 0 then it will be a continuous progress. If not, it will be a discrete progress view with (max/step) markers.
  */
