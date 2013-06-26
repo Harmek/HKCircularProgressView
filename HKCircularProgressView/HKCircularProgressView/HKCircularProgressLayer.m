@@ -207,6 +207,7 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
             self.trackTintColor = other.trackTintColor;
             self.outlineTintColor = other.outlineTintColor;
             self.outlineWidth = other.outlineWidth;
+            self.alwaysDrawOutline = other.alwaysDrawOutline;
             self.animationDuration = other.animationDuration;
             self.fillRadius = other.fillRadius;
             self.drawFullTrack = other.drawFullTrack;
@@ -259,6 +260,7 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
         || [key isEqualToString:@"trackTintColor"]
         || [key isEqualToString:@"outlineTintColor"]
         || [key isEqualToString:@"outlineWidth"]
+        || [key isEqualToString:@"alwaysDrawOutline"]
         || [key isEqualToString:@"fillRadius"]
         || [key isEqualToString:@"fillRadiusPx"]
         || [key isEqualToString:@"drawFullTrack"]
@@ -335,11 +337,17 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
                             andInnerRadius:radius
                                    atAngle:startAngle];
 
-    CGContextClosePath(ctx);
-    if (fill)
-        CGContextFillPath(ctx);
-    CGContextStrokePath(ctx);
+    CGPathDrawingMode drawingMode = kCGPathFill;
+    if (self.alwaysDrawOutline || !fill)
+    {
+        if (!fill)
+            drawingMode = kCGPathStroke;
+        else
+            drawingMode = kCGPathFillStroke;
+    }
 
+    CGContextClosePath(ctx);
+    CGContextDrawPath(ctx, drawingMode);
 }
 
 - (void)drawProgressInContext:(CGContextRef)ctx
@@ -368,7 +376,7 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
                        between:self.startAngle
                            and:destAngle
                           fill:YES];
-        if (self.outlineWidth> .0 && self.current < self.max)
+        if (self.outlineWidth > .0 && current < max)
         {
             [self drawArcInContext:ctx
                         withCenter:center
@@ -386,7 +394,8 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
         float incr = (self.step - (self.step * self.gap)) / max;
         float stepAngle = incr * k2Pi;
         float startAngle = self.startAngle + (gapAngle * .5f);
-        for (float f = .0f; f < current; f += self.step)
+        float f = .0;
+        for (; f < current; f += self.step)
         {
             destAngle = startAngle + stepAngle;
             [self drawArcInContext:ctx
@@ -401,7 +410,7 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
 
         if (self.outlineWidth > .0 && max)
         {
-            for (float f = current + self.step; f <= max; f += self.step)
+            for (; f <= max; f += self.step)
             {
                 destAngle = startAngle + stepAngle;
                 [self drawArcInContext:ctx
@@ -454,7 +463,10 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
             };
             radius = deltaRadius;
         }
-        [self drawTrackInContext:ctx withCenter:center andRadius:radius fillRadius:1];
+        [self drawTrackInContext:ctx
+                      withCenter:center
+                       andRadius:radius
+                      fillRadius:1];
 
         CGFloat current = self.current;
         for (; current > self.concentricStep; current -= self.concentricStep)

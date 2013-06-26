@@ -72,20 +72,23 @@
 
     self.concentricProgressView.max = 1;
     self.concentricProgressView.concentricStep = .3;
-    self.concentricProgressView.step = .02;
     self.concentricProgressView.progressTintColor = [UIColor brownColor];
+    self.concentricProgressView.outlineWidth = 1.;
     self.concentricProgressView.concentricProgressionType = HKConcentricProgressionTypeExcentric;
     [[HKCircularProgressView appearance] setAnimationDuration:5];
+
+    self.circularProgressView.alwaysDrawOutline = YES;
+    self.concentricProgressView.alwaysDrawOutline = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.circularProgressView setCurrent:1.0f
+    [self.circularProgressView setCurrent:0.6f
                                  animated:YES];
     [self.circularProgressView2 setCurrent:1.0f
                                   animated:YES];
-    [self.circularProgressView3 setCurrent:1.0f
+    [self.circularProgressView3 setCurrent:0.7f
                                   animated:YES];
     [self.concentricProgressView setCurrent:1.0f
                                    animated:YES];

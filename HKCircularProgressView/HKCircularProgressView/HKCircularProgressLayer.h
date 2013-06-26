@@ -94,6 +94,7 @@ typedef NS_ENUM(NSUInteger, HKConcentricProgressionType)
 @property (nonatomic, strong) UIColor                               *trackTintColor;
 @property (nonatomic, strong) UIColor                               *outlineTintColor;
 @property (nonatomic, assign) CGFloat                               outlineWidth;
+@property (nonatomic, assign) BOOL                                  alwaysDrawOutline;
 @property (nonatomic, assign) CFTimeInterval                        animationDuration;
 @property (nonatomic, assign) CGFloat                               fillRadius;
 @property (nonatomic, assign) CGFloat                               fillRadiusPx;

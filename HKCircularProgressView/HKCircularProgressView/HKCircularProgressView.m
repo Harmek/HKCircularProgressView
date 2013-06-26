@@ -148,6 +148,16 @@
     }
 }
 
+- (void)setAlwaysDrawOutline:(BOOL)alwaysDrawOutline
+{
+    if (self.alwaysDrawOutline != alwaysDrawOutline)
+    {
+        HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+        layer.alwaysDrawOutline = alwaysDrawOutline;
+        [layer setNeedsDisplay];
+    }
+}
+
 - (void)setFillRadius:(float)fillRadius
              animated:(BOOL)animated
 {
@@ -223,11 +233,11 @@
     {
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"current"];
         animation.duration = self.animationDuration;
-        animation.fromValue = [NSNumber numberWithFloat:layer.current];
+        animation.fromValue = [NSNumber numberWithFloat:self.current];
         animation.toValue = [NSNumber numberWithFloat:current];
         [self.layer addAnimation:animation forKey:@"currentAnimation"];
     }
-
+    
     layer.current = current;
     [layer setNeedsDisplay];
 }
@@ -353,6 +363,13 @@
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.outlineTintColor;
+}
+
+- (BOOL)alwaysDrawOutline
+{
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+
+    return layer.alwaysDrawOutline;
 }
 
 - (CGFloat)outlineWidth

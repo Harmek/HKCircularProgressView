@@ -71,6 +71,7 @@
  */
 @property (nonatomic) CGFloat                               outlineWidth        UI_APPEARANCE_SELECTOR;
 
+@property (nonatomic) BOOL                                  alwaysDrawOutline   UI_APPEARANCE_SELECTOR;
 /**
  * Duration of the animation
  */
