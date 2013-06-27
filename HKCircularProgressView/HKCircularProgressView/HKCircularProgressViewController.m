@@ -72,9 +72,11 @@
 
     self.concentricProgressView.max = 1;
     self.concentricProgressView.concentricStep = .3;
+    self.concentricProgressView.concentricGap = .25;
     self.concentricProgressView.progressTintColor = [UIColor brownColor];
     self.concentricProgressView.outlineWidth = 1.;
     self.concentricProgressView.concentricProgressionType = HKConcentricProgressionTypeExcentric;
+
     [[HKCircularProgressView appearance] setAnimationDuration:5];
 
     self.circularProgressView.alwaysDrawOutline = YES;

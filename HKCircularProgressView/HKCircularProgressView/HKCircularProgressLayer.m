@@ -215,6 +215,7 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
             self.endPoint = other.endPoint;
 
             self.concentricStep = other.concentricStep;
+            self.concentricGap = other.concentricGap;
             self.concentricProgressionType = other.concentricProgressionType;
             self.step = other.step;
             self.current = other.current;
@@ -426,6 +427,56 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
     }
 }
 
+- (void)drawConcentricProgressionInContext:(CGContextRef)ctx
+                                  atCenter:(CGPoint)center
+                                withRadius:(CGFloat)radiusPx
+{
+    NSUInteger nbCirclesNeeded = ceil(self.max / self.concentricStep);
+    CGFloat deltaRadiusPx = (radiusPx / nbCirclesNeeded);
+    CGFloat concentricGapPx = deltaRadiusPx * self.concentricGap;
+
+    HKConcentricProgressionFunction changeRadius = nil;
+    if (self.concentricProgressionType == HKConcentricProgressionTypeConcentric)
+    {
+        changeRadius = ^CGFloat (CGFloat oldRadius, CGFloat deltaRadius){
+            return oldRadius - deltaRadius;
+        };
+    }
+    else
+    {
+        changeRadius = ^CGFloat (CGFloat oldRadius, CGFloat deltaRadius){
+            return oldRadius + deltaRadius;
+        };
+        radiusPx = deltaRadiusPx;
+    }
+    [self drawTrackInContext:ctx
+                  withCenter:center
+                   andRadius:radiusPx
+                  fillRadius:1];
+
+    CGFloat current = self.current;
+    // First we draw the circles that are already full.
+    for (; current > self.concentricStep; current -= self.concentricStep)
+    {
+        [self drawProgressInContext:ctx
+                           atCenter:center
+                         withRadius:radiusPx
+                            current:self.concentricStep
+                                max:self.concentricStep
+                         fillRadius:(deltaRadiusPx - concentricGapPx) / radiusPx];
+        
+        radiusPx = changeRadius(radiusPx, deltaRadiusPx);
+    }
+    // Then we draw the remaining circle
+    [self drawProgressInContext:ctx
+                       atCenter:center
+                     withRadius:radiusPx
+                        current:current
+                            max:self.concentricStep
+                     fillRadius:(deltaRadiusPx - concentricGapPx) / radiusPx];
+
+}
+
 - (void)drawInContext:(CGContextRef)ctx
 {
     CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) * .5f - (2. * self.outlineWidth);
@@ -446,46 +497,9 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
     }
     else
     {
-        CGFloat deltaMax = self.max / self.concentricStep;
-        NSUInteger nbCirclesNeeded = ceil(deltaMax);
-        CGFloat deltaRadius = radius / nbCirclesNeeded;
-        HKConcentricProgressionFunction changeRadius = nil;
-        if (self.concentricProgressionType == HKConcentricProgressionTypeConcentric)
-        {
-            changeRadius = ^CGFloat (CGFloat oldRadius, CGFloat deltaRadius){
-                return oldRadius - deltaRadius;
-            };
-        }
-        else
-        {
-            changeRadius = ^CGFloat (CGFloat oldRadius, CGFloat deltaRadius){
-                return oldRadius + deltaRadius;
-            };
-            radius = deltaRadius;
-        }
-        [self drawTrackInContext:ctx
-                      withCenter:center
-                       andRadius:radius
-                      fillRadius:1];
-
-        CGFloat current = self.current;
-        for (; current > self.concentricStep; current -= self.concentricStep)
-        {
-            [self drawProgressInContext:ctx
-                               atCenter:center
-                             withRadius:radius
-                                current:self.concentricStep
-                                    max:self.concentricStep
-                             fillRadius:(deltaRadius / radius)];
-            radius = changeRadius(radius, deltaRadius);
-        }
-
-        [self drawProgressInContext:ctx
-                           atCenter:center
-                         withRadius:radius
-                            current:current
-                                max:self.concentricStep
-                         fillRadius:deltaRadius / radius];
+        [self drawConcentricProgressionInContext:ctx
+                                        atCenter:center
+                                      withRadius:radius];
     }
 }
 

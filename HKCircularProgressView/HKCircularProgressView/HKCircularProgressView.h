@@ -108,6 +108,7 @@
 @property (nonatomic) CGFloat                               gap                 UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic) CGFloat           concentricStep;
+@property (nonatomic, assign) CGFloat   concentricGap;
 
 @property (nonatomic) HKConcentricProgressionType concentricProgressionType;
 /**

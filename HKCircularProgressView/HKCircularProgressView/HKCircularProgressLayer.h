@@ -103,6 +103,7 @@ typedef NS_ENUM(NSUInteger, HKConcentricProgressionType)
 @property (nonatomic, strong) id<HKCircularProgressEndPointDrawer>  endPoint;
 
 @property (nonatomic, assign) CGFloat                       concentricStep;
+@property (nonatomic, assign) CGFloat                       concentricGap;
 @property (nonatomic, assign) HKConcentricProgressionType   concentricProgressionType;
 @property (nonatomic, assign) CGFloat                       step;
 @property (nonatomic, assign) CGFloat                       max;

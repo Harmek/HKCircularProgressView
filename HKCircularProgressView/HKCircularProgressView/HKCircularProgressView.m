@@ -297,6 +297,16 @@
     }
 }
 
+- (void)setConcentricGap:(CGFloat)concentricGap
+{
+    if (concentricGap != self.concentricGap)
+    {
+        HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+        layer.concentricGap = concentricGap;
+        [layer setNeedsDisplay];
+    }
+}
+
 - (void)setConcentricProgressionType:(HKConcentricProgressionType)concentricProgressionType
 {
     if (concentricProgressionType != self.concentricProgressionType)
@@ -426,6 +436,13 @@
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.concentricStep;
+}
+
+- (CGFloat)concentricGap
+{
+    HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
+
+    return layer.concentricGap;
 }
 
 - (HKConcentricProgressionType)concentricProgressionType
