@@ -70,11 +70,14 @@
 
     [HKCircularProgressViewController addShadowToView:self.circularProgressView];
 
-    self.concentricProgressView.max = 1;
-    self.concentricProgressView.concentricStep = .3;
+    self.concentricProgressView.max = 150;
+    self.concentricProgressView.concentricStep = 60;
     self.concentricProgressView.concentricGap = .25;
-    self.concentricProgressView.progressTintColor = [UIColor brownColor];
-    self.concentricProgressView.outlineWidth = 1.;
+    self.concentricProgressView.gap = .25;
+    self.concentricProgressView.step = 5;
+    self.concentricProgressView.progressTintColor = [UIColor cyanColor];
+    self.concentricProgressView.outlineTintColor = [UIColor blackColor];
+    self.concentricProgressView.outlineWidth = 1;
     self.concentricProgressView.concentricProgressionType = HKConcentricProgressionTypeExcentric;
 
     [[HKCircularProgressView appearance] setAnimationDuration:5];
@@ -92,15 +95,15 @@
                                   animated:YES];
     [self.circularProgressView3 setCurrent:0.7f
                                   animated:YES];
-    [self.concentricProgressView setCurrent:1.0f
+    [self.concentricProgressView setCurrent:150
                                    animated:YES];
 }
 
 - (void)viewDidUnload {
     [self setCircularProgressView2:nil];
     [self setCircularProgressView3:nil];
-    [self setCircularProgressView2:nil];
     [self setCircularProgressView:nil];
+    [self setConcentricProgressView:nil];
     [super viewDidUnload];
 }
 @end

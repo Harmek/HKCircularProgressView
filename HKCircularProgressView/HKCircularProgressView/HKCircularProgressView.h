@@ -54,76 +54,93 @@
 /**
  * Color of the progress circular bar
  */
-@property (nonatomic) UIColor                               *progressTintColor  UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *progressTintColor UI_APPEARANCE_SELECTOR;
 
 /**
  * Color of the track (drawn under the progress)
  */
-@property (nonatomic) UIColor                               *trackTintColor     UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *trackTintColor UI_APPEARANCE_SELECTOR;
 
 /**
  * Color of the outline
  */
-@property (nonatomic) UIColor                               *outlineTintColor   UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *outlineTintColor UI_APPEARANCE_SELECTOR;
 
 /**
  * Width of the outline
  */
-@property (nonatomic) CGFloat                               outlineWidth        UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGFloat outlineWidth UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic) BOOL                                  alwaysDrawOutline   UI_APPEARANCE_SELECTOR;
+/**
+ * Determines whether the outline is always drawn, even for full segments.
+ */
+@property (nonatomic, assign) BOOL alwaysDrawOutline UI_APPEARANCE_SELECTOR;
+
 /**
  * Duration of the animation
  */
-@property (nonatomic) CFTimeInterval                        animationDuration   UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CFTimeInterval animationDuration UI_APPEARANCE_SELECTOR;
 
 /**
  * Percentage of the circle that will be filled (1 draws a full circle, ]0..1[ draws a ring).
  */
-@property (nonatomic) float                                 fillRadius          UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGFloat fillRadius UI_APPEARANCE_SELECTOR;
 
 /**
  * Amount of the circle that will be filled in pixels (thickness of the ring).
  */
-@property (nonatomic) float                                 fillRadiusPx        UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGFloat fillRadiusPx UI_APPEARANCE_SELECTOR;
 
 /**
  * Angle, in radius, where the progress starts.
  */
-@property (nonatomic) float                                 startAngle          UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGFloat startAngle UI_APPEARANCE_SELECTOR;
 
 /**
  * Determines whether the track is drawn a complete circle or if it uses the fillRadius parameter.
  */
-@property (nonatomic) BOOL                                  drawFullTrack       UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) BOOL drawFullTrack UI_APPEARANCE_SELECTOR;
 
 /**
  * Object that is responsible for drawing the end points of the circular progress.
  */
-@property (nonatomic) id<HKCircularProgressEndPointDrawer>  endPoint            UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) id<HKCircularProgressEndPointDrawer> endPoint UI_APPEARANCE_SELECTOR;
 
 /**
  * Value between 0 and 1 determining the gap between 2 segments. Only used if the step parameter is used.
  */
-@property (nonatomic) CGFloat                               gap                 UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) CGFloat gap UI_APPEARANCE_SELECTOR;
 
-@property (nonatomic) CGFloat           concentricStep;
-@property (nonatomic, assign) CGFloat   concentricGap;
+/**
+ * If 0 it will draw a single progression circle. If not it will draw ceil(max / concentricStep) concentric circles progressing one after another.
+ */
+@property (nonatomic, assign) CGFloat concentricStep;
 
-@property (nonatomic) HKConcentricProgressionType concentricProgressionType;
+/**
+ * Value between 0 and 1 determining the gap between 2 concentric circles.
+ * Only used if the concentricStep parameter is used.
+ */
+@property (nonatomic, assign) CGFloat concentricGap;
+
+/**
+ * Value indicating if the concentric circles will progress inwards (HKConcentricProgressionTypeConcentric) or outwards (HKConcentricProgressionTypeExcentric).
+ * Only used if the concentricStep parameter is used.
+ */
+@property (nonatomic, assign) HKConcentricProgressionType concentricProgressionType;
+
 /**
  * If 0 then it will be a continuous progress. If not, it will be a discrete progress view with (max/step) markers.
  */
-@property (nonatomic) float             step;
+@property (nonatomic, assign) CGFloat step;
 
 /**
  * Maximum value.
  */
-@property (nonatomic) float             max;
+@property (nonatomic, assign) CGFloat max;
 
 /**
  * Current value.
  */
-@property (nonatomic) float             current;
+@property (nonatomic, assign) CGFloat current;
 
 @end

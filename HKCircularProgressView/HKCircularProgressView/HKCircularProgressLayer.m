@@ -390,12 +390,12 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
     }
     else
     {
-        float gap = (self.step * self.gap) / max;
-        float gapAngle = gap * k2Pi;
-        float incr = (self.step - (self.step * self.gap)) / max;
-        float stepAngle = incr * k2Pi;
-        float startAngle = self.startAngle + (gapAngle * .5f);
-        float f = .0;
+        CGFloat gap = (self.step * self.gap) / max;
+        CGFloat gapAngle = gap * k2Pi;
+        CGFloat incr = (self.step - (self.step * self.gap)) / max;
+        CGFloat stepAngle = incr * k2Pi;
+        CGFloat startAngle = self.startAngle + (gapAngle * .5f);
+        CGFloat f = .0;
         for (; f < current; f += self.step)
         {
             destAngle = startAngle + stepAngle;
