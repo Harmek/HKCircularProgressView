@@ -78,6 +78,7 @@
     self.opaque = NO;
     self.layer.contentsScale = [UIScreen mainScreen].scale;
 
+    self.animationTiming = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
     self.progressTintColor = [UIColor blackColor];
     self.trackTintColor = [UIColor clearColor];
     self.outlineTintColor = nil;
@@ -97,6 +98,7 @@
 {
     CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"startAngle"];
     animation.duration = 1;
+    
     animation.fromValue = [NSNumber numberWithFloat:0];
     animation.toValue = [NSNumber numberWithFloat:2 * M_PI];
     animation.repeatCount = INFINITY;
@@ -175,6 +177,7 @@
         animation.duration = self.animationDuration;
         animation.fromValue = [NSNumber numberWithFloat:self.fillRadius];
         animation.toValue = [NSNumber numberWithFloat:fillRadius];
+        animation.timingFunction = self.animationTiming;
         animation.delegate = self;
         [self.layer addAnimation:animation forKey:@"fillRadiusAnimation"];
     }
@@ -183,7 +186,7 @@
     [layer setNeedsDisplay];
 }
 
-- (void)setFillRadius:(float)fillRadius
+- (void)setFillRadius:(CGFloat)fillRadius
 {
     [self setFillRadius:fillRadius animated:NO];
 }
@@ -206,6 +209,7 @@
         animation.fromValue = [NSNumber numberWithFloat:self.fillRadiusPx];
         animation.toValue = [NSNumber numberWithFloat:fillRadiusPx];
         animation.delegate = self;
+        animation.timingFunction = self.animationTiming;
         [self.layer addAnimation:animation forKey:@"fillRadiusPxAnimation"];
     }
 
@@ -213,7 +217,7 @@
     [layer setNeedsDisplay];
 }
 
-- (void)setFillRadiusPx:(float)fillRadiusPx
+- (void)setFillRadiusPx:(CGFloat)fillRadiusPx
 {
     [self setFillRadiusPx:fillRadiusPx animated:NO];
 }
@@ -235,6 +239,7 @@
         animation.duration = self.animationDuration;
         animation.fromValue = [NSNumber numberWithFloat:self.current];
         animation.toValue = [NSNumber numberWithFloat:current];
+        animation.timingFunction = self.animationTiming;
         [self.layer addAnimation:animation forKey:@"currentAnimation"];
     }
     
@@ -242,12 +247,12 @@
     [layer setNeedsDisplay];
 }
 
-- (void)setCurrent:(float)current
+- (void)setCurrent:(CGFloat)current
 {
     [self setCurrent:current animated:YES];
 }
 
-- (void)setStartAngle:(float)startAngle
+- (void)setStartAngle:(CGFloat)startAngle
 {
     if (startAngle != self.startAngle)
     {
@@ -317,7 +322,7 @@
     }
 }
 
-- (void)setStep:(float)step
+- (void)setStep:(CGFloat)step
 {
     if (step != self.step)
     {
@@ -342,6 +347,7 @@
         animation.duration = self.animationDuration;
         animation.fromValue = [NSNumber numberWithFloat:layer.max];
         animation.toValue = [NSNumber numberWithFloat:max];
+        animation.timingFunction = self.animationTiming;
         [self.layer addAnimation:animation forKey:@"currentAnimation"];
     }
 
@@ -349,7 +355,7 @@
     [layer setNeedsDisplay];
 }
 
-- (void)setMax:(float)max
+- (void)setMax:(CGFloat)max
 {
     [self setMax:max animated:YES];
 }
@@ -389,21 +395,21 @@
     return layer.outlineWidth;
 }
 
-- (float)fillRadius
+- (CGFloat)fillRadius
 {
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.fillRadius;
 }
 
-- (float)fillRadiusPx
+- (CGFloat)fillRadiusPx
 {
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.fillRadiusPx;
 }
 
-- (float)startAngle
+- (CGFloat)startAngle
 {
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
@@ -431,7 +437,7 @@
     return layer.gap;
 }
 
-- (float)concentricStep
+- (CGFloat)concentricStep
 {
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
@@ -452,21 +458,21 @@
     return layer.concentricProgressionType;
 }
 
-- (float)step
+- (CGFloat)step
 {
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.step;
 }
 
-- (float)max
+- (CGFloat)max
 {
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
 
     return layer.max;
 }
 
-- (float)current
+- (CGFloat)current
 {
     HKCircularProgressLayer *layer = (HKCircularProgressLayer *)self.layer;
     
