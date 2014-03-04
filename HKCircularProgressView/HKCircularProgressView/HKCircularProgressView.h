@@ -52,6 +52,11 @@
 - (void)stopAnimating;
 
 /**
+ * The timing of the animation. fx easeIn, easeOut etc.
+ */
+@property (nonatomic, strong) CAMediaTimingFunction *animationTiming;
+
+/**
  * Color of the progress circular bar
  */
 @property (nonatomic, strong) UIColor *progressTintColor UI_APPEARANCE_SELECTOR;
