@@ -32,13 +32,13 @@
 
 @interface HKCircularProgressView : UIView
 
-- (void)setFillRadius:(float)fill
+- (void)setFillRadius:(CGFloat)fill
              animated:(BOOL)animated;
 
-- (void)setCurrent:(float)current
+- (void)setCurrent:(CGFloat)current
           animated:(BOOL)animated;
 
-- (void)setMax:(float)max
+- (void)setMax:(CGFloat)max
       animated:(BOOL)animated;
 
 /**

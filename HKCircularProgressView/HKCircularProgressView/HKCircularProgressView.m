@@ -160,7 +160,7 @@
     }
 }
 
-- (void)setFillRadius:(float)fillRadius
+- (void)setFillRadius:(CGFloat)fillRadius
              animated:(BOOL)animated
 {
     if (self.fillRadius == fillRadius)
@@ -191,7 +191,7 @@
     [self setFillRadius:fillRadius animated:NO];
 }
 
-- (void)setFillRadiusPx:(float)fillRadiusPx
+- (void)setFillRadiusPx:(CGFloat)fillRadiusPx
                animated:(BOOL)animated
 {
     if (self.fillRadiusPx == fillRadiusPx)
@@ -206,8 +206,8 @@
     {
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"fillRadiusPx"];
         animation.duration = self.animationDuration;
-        animation.fromValue = [NSNumber numberWithFloat:self.fillRadiusPx];
-        animation.toValue = [NSNumber numberWithFloat:fillRadiusPx];
+        animation.fromValue = @(self.fillRadiusPx);
+        animation.toValue = @(fillRadiusPx);
         animation.delegate = self;
         animation.timingFunction = self.animationTiming;
         [self.layer addAnimation:animation forKey:@"fillRadiusPxAnimation"];
@@ -222,7 +222,7 @@
     [self setFillRadiusPx:fillRadiusPx animated:NO];
 }
 
-- (void)setCurrent:(float)current
+- (void)setCurrent:(CGFloat)current
           animated:(BOOL)animated
 {
     if (current == self.current)
@@ -237,8 +237,8 @@
     {
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"current"];
         animation.duration = self.animationDuration;
-        animation.fromValue = [NSNumber numberWithFloat:self.current];
-        animation.toValue = [NSNumber numberWithFloat:current];
+        animation.fromValue = @(self.current);
+        animation.toValue = @(current);
         animation.timingFunction = self.animationTiming;
         [self.layer addAnimation:animation forKey:@"currentAnimation"];
     }
@@ -332,7 +332,7 @@
     }
 }
 
-- (void)setMax:(float)max
+- (void)setMax:(CGFloat)max
       animated:(BOOL)animated
 {
     if (max == self.max)
@@ -345,8 +345,8 @@
     {
         CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"current"];
         animation.duration = self.animationDuration;
-        animation.fromValue = [NSNumber numberWithFloat:layer.max];
-        animation.toValue = [NSNumber numberWithFloat:max];
+        animation.fromValue = @(layer.max);
+        animation.toValue = @(max);
         animation.timingFunction = self.animationTiming;
         [self.layer addAnimation:animation forKey:@"currentAnimation"];
     }
