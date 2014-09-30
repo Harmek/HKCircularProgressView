@@ -160,7 +160,7 @@
     }
 }
 
-- (void)setFillRadius:(float)fillRadius
+- (void)setFillRadius:(CGFloat)fillRadius
              animated:(BOOL)animated
 {
     if (self.fillRadius == fillRadius)
@@ -191,7 +191,7 @@
     [self setFillRadius:fillRadius animated:NO];
 }
 
-- (void)setFillRadiusPx:(float)fillRadiusPx
+- (void)setFillRadiusPx:(CGFloat)fillRadiusPx
                animated:(BOOL)animated
 {
     if (self.fillRadiusPx == fillRadiusPx)
@@ -222,7 +222,7 @@
     [self setFillRadiusPx:fillRadiusPx animated:NO];
 }
 
-- (void)setCurrent:(float)current
+- (void)setCurrent:(CGFloat)current
           animated:(BOOL)animated
 {
     if (current == self.current)
@@ -332,7 +332,7 @@
     }
 }
 
-- (void)setMax:(float)max
+- (void)setMax:(CGFloat)max
       animated:(BOOL)animated
 {
     if (max == self.max)

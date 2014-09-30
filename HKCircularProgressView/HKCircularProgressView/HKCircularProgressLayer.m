@@ -31,7 +31,7 @@
 
 #define TWO_PI M_PI * 2.0f
 
-static const float k2Pi = TWO_PI;
+static const CGFloat k2Pi = TWO_PI;
 
 @implementation HKCircularProgressEndPointFlat
 
@@ -242,7 +242,7 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
     return _endPoint;
 }
 
-- (void)setFillRadiusPx:(float)fillRadiusPx
+- (void)setFillRadiusPx:(CGFloat)fillRadiusPx
 {
     CGFloat radius = MIN(self.bounds.size.width, self.bounds.size.height) * .5f - (2. * self.outlineWidth);
     [self setFillRadius:fillRadiusPx / radius];
