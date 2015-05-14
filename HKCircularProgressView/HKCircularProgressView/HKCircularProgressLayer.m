@@ -368,7 +368,12 @@ typedef CGFloat (^HKConcentricProgressionFunction)(CGFloat, CGFloat);
 
     if (self.step == .0f)
     {
-        CGFloat progress = current / max;
+        CGFloat progress;
+        if (max > 0)
+            progress = current / max;
+        else
+            progress = 0;
+        
         destAngle = self.startAngle + progress * k2Pi;
         [self drawArcInContext:ctx
                     withCenter:center
